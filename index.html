@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کسرهای تلسکوپی، مجموع‌ها و کسرهای مصری | آموزش تعاملی</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌲</text></svg>">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{
+  --bg0:#060b14; --bg1:#0a1626; --bg2:#0d1f1a;
+  --card:rgba(13,30,26,.62); --card2:rgba(10,24,34,.66);
+  --line:rgba(52,211,153,.16); --line2:rgba(251,191,36,.22);
+  --tx:#e8f3ec; --mut:#93a89d;
+  --em:#34d399; --em2:#10b981; --teal:#2dd4bf;
+  --gold:#fbbf24; --gold2:#f59e0b;
+  --red:#f87171; --ok:#4ade80;
+  --grad:linear-gradient(135deg,#34d399 0%,#2dd4bf 100%);
+  --gradG:linear-gradient(135deg,#fbbf24,#f59e0b);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Vazirmatn',Vazir,Tahoma,'Segoe UI',sans-serif;
+  background:radial-gradient(1200px 700px at 80% -10%,#123043 0%,transparent 60%),
+             radial-gradient(1000px 600px at 10% 110%,#0c2a1e 0%,transparent 55%),
+             linear-gradient(180deg,var(--bg0) 0%,var(--bg1) 45%,#071310 100%);
+  color:var(--tx); min-height:100vh; overflow-x:hidden; line-height:1.9;
+}
+::selection{background:rgba(52,211,153,.35)}
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.container{max-width:1000px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+
+/* ---------- Progress + Nav ---------- */
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.05);z-index:60}
+.progress-bar{height:100%;width:0;background:var(--grad);box-shadow:0 0 12px rgba(45,212,191,.7);transition:width .12s linear;border-radius:0 4px 4px 0}
+.topnav{position:fixed;top:4px;right:0;left:0;z-index:55;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(7,16,14,.72);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1000px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--gold);white-space:nowrap;font-size:.95rem}
+.nav-links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{color:var(--mut);text-decoration:none;font-size:.82rem;padding:6px 11px;border-radius:99px;white-space:nowrap;transition:.25s;border:1px solid transparent}
+.nav-links a:hover{color:var(--tx);background:rgba(52,211,153,.08)}
+.nav-links a.active{color:#06281e;background:var(--grad);font-weight:700}
+.score-badge{background:rgba(251,191,36,.12);border:1px solid var(--line2);color:var(--gold);padding:6px 14px;border-radius:99px;font-size:.82rem;font-weight:700;white-space:nowrap}
+
+/* ---------- Hero ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;z-index:2;padding:90px 20px 40px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(52,211,153,.1);border:1px solid var(--line);color:var(--em);padding:8px 18px;border-radius:99px;font-size:.85rem;margin-bottom:26px;animation:fadeUp .9s .1s both}
+.hero-title{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:900;line-height:1.35;background:linear-gradient(120deg,#e8f3ec 20%,#34d399 50%,#fbbf24 80%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:fadeUp .9s .25s both}
+.hero-sub{color:var(--mut);max-width:640px;font-size:clamp(1rem,2.4vw,1.15rem);margin:22px auto 34px;animation:fadeUp .9s .4s both}
+.hero-frac{display:inline-flex;flex-direction:column;vertical-align:middle;margin:0 6px;animation:floaty 3.4s ease-in-out infinite}
+.hero-frac .n{border-bottom:2px solid var(--gold);padding:0 8px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .9s .55s both}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#06281e;font-weight:800;padding:13px 30px;border-radius:16px;text-decoration:none;border:none;cursor:pointer;font-size:1rem;font-family:inherit;transition:.3s;box-shadow:0 8px 26px rgba(45,212,191,.25)}
+.btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 34px rgba(45,212,191,.4)}
+.btn-ghost{background:transparent;color:var(--em);border:1.5px solid var(--em);box-shadow:none}
+.btn-ghost:hover{background:rgba(52,211,153,.1)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-gold{background:var(--gradG);color:#3a2503;box-shadow:0 8px 26px rgba(251,191,36,.25)}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--mut);font-size:.8rem;animation:bounce 2s infinite}
+.float-sym{position:absolute;color:rgba(52,211,153,.16);font-weight:900;user-select:none;animation:floaty 6s ease-in-out infinite;z-index:1;pointer-events:none}
+
+/* ---------- Cards / Sections ---------- */
+.wrap{padding:20px 0 90px}
+section.card{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:38px 34px;margin:34px 0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.35);opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease}
+section.card.visible{opacity:1;transform:none}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.sec-num{min-width:52px;height:52px;border-radius:16px;background:var(--grad);color:#06281e;font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(45,212,191,.3)}
+.sec-head h2{font-size:clamp(1.35rem,3.4vw,1.75rem);font-weight:900;background:linear-gradient(120deg,#e8f3ec,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--mut);font-size:1.02rem;margin:6px 0 18px}
+p{margin:12px 0;color:#cfe0d6}
+strong{color:var(--tx)}
+em.g{color:var(--gold);font-style:normal;font-weight:700}
+em.e{color:var(--em);font-style:normal;font-weight:700}
+.m{direction:ltr;unicode-bidi:isolate;font-weight:700;color:var(--teal)}
+
+/* ---------- Boxes ---------- */
+.note-box,.warn-box,.tip-box{border-radius:16px;padding:18px 20px;margin:20px 0;position:relative}
+.note-box{background:rgba(251,191,36,.07);border:1px solid var(--line2);border-right:4px solid var(--gold)}
+.warn-box{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-right:4px solid var(--red)}
+.tip-box{background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.25);border-right:4px solid var(--teal)}
+.box-title{font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.note-box .box-title{color:var(--gold)} .warn-box .box-title{color:var(--red)} .tip-box .box-title{color:var(--teal)}
+.note-box p,.warn-box p,.tip-box p{margin:6px 0;font-size:.95rem}
+.wrong{color:var(--red);font-weight:700} .right{color:var(--ok);font-weight:700}
+
+/* ---------- Math / Fractions ---------- */
+.formula-box{direction:ltr;unicode-bidi:isolate;background:rgba(4,12,10,.55);border:1px solid var(--line);border-radius:18px;padding:22px 18px;margin:20px 0;text-align:center;font-size:1.28rem;font-weight:700;letter-spacing:.4px;line-height:2.4;box-shadow:inset 0 0 40px rgba(45,212,191,.05)}
+.formula-box.gold{border-color:var(--line2)}
+.formula-box .fbig{font-size:1.5em;color:var(--gold)}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 3px;line-height:1.3}
+.frac .fn{border-bottom:2.2px solid currentColor;padding:0 7px 2px}
+.frac .fd{padding:2px 7px 0}
+.frac.big{font-size:1.25em}
+.paren{display:inline-block;transform:scaleY(1.55);font-weight:400;color:inherit;margin:0 2px}
+.term{position:relative;display:inline-block;padding:3px 7px;border-radius:10px;transition:opacity .8s ease .55s}
+.term::after{content:'';position:absolute;top:50%;right:8%;left:8%;height:3px;background:var(--red);border-radius:3px;transform:scaleX(0) rotate(-5deg);transition:transform .5s cubic-bezier(.6,0,.4,1);box-shadow:0 0 10px rgba(248,113,113,.8)}
+.term.struck::after{transform:scaleX(1) rotate(-5deg)}
+.term.struck{opacity:.22}
+.survivor{transition:all .9s ease 1s}
+.survivor.glow{color:var(--gold);text-shadow:0 0 16px rgba(251,191,36,.65);transform:scale(1.08)}
+.eq{color:var(--mut);margin:0 10px;font-weight:400}
+.pr{color:var(--em);font-weight:900}
+.step-list{counter-reset:st;list-style:none;margin:16px 0}
+.step-list li{counter-increment:st;position:relative;padding:10px 58px 10px 14px;margin:12px 0;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:14px}
+.step-list li::before{content:counter(st);position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:10px;background:var(--grad);color:#06281e;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.step-list .inner{direction:ltr;unicode-bidi:isolate;text-align:center;font-weight:700;margin:8px 0;font-size:1.12rem}
+.grp{display:inline-block;background:rgba(45,212,191,.08);border:1px dashed rgba(45,212,191,.4);border-radius:14px;padding:4px 12px;margin:4px 3px}
+
+/* ---------- Quiz ---------- */
+.quiz{margin-top:30px;border:1.5px solid var(--line2);border-radius:22px;padding:26px;background:linear-gradient(160deg,rgba(251,191,36,.06),rgba(10,24,20,.5))}
+.quiz-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gradG);color:#3a2503;font-weight:800;font-size:.78rem;padding:5px 14px;border-radius:99px;margin-bottom:14px}
+.quiz-q{font-weight:800;font-size:1.08rem;margin-bottom:16px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{background:rgba(255,255,255,.035);border:1.5px solid rgba(255,255,255,.09);color:var(--tx);padding:13px;border-radius:14px;cursor:pointer;font-family:inherit;font-size:1.05rem;font-weight:700;transition:.25s;direction:ltr;text-align:center}
+.opt:hover{border-color:var(--em);background:rgba(52,211,153,.08);transform:translateY(-2px)}
+.opt.correct{border-color:var(--ok);background:rgba(74,222,128,.14);color:var(--ok);animation:pop .45s}
+.opt.wrong{border-color:var(--red);background:rgba(248,113,113,.12);animation:shake .45s}
+.opt:disabled{cursor:default;opacity:.75}
+.opt.reveal{border-color:var(--ok);box-shadow:0 0 0 2px rgba(74,222,128,.4)}
+.feedback{margin-top:14px;padding:13px 16px;border-radius:12px;font-size:.95rem;display:none;animation:fadeUp .4s}
+.feedback.ok{display:block;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:var(--ok)}
+.feedback.err{display:block;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);color:var(--red)}
+.quiz-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+
+/* ---------- Solution reveal ---------- */
+.sol-box{max-height:0;overflow:hidden;transition:max-height .9s ease}
+.sol-in{margin-top:16px;background:rgba(4,12,10,.5);border:1px solid var(--line);border-radius:16px;padding:20px}
+.sol-title{color:var(--teal);font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+
+/* ---------- Table ---------- */
+.table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--line);margin:18px 0}
+table.cmp{width:100%;border-collapse:collapse;min-width:640px;font-size:.92rem}
+.cmp th{background:linear-gradient(135deg,rgba(52,211,153,.2),rgba(45,212,191,.12));color:var(--tx);padding:14px 12px;font-weight:800;border-bottom:1.5px solid var(--line);white-space:nowrap}
+.cmp td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,.05);color:#cfe0d6;vertical-align:top}
+.cmp tr:last-child td{border-bottom:none}
+.cmp tbody tr{transition:.25s}
+.cmp tbody tr:hover{background:rgba(52,211,153,.05)}
+.cmp td:first-child{color:var(--gold);font-weight:800;white-space:nowrap}
+.cmp .ff{direction:ltr;unicode-bidi:isolate;display:inline-block}
+
+/* ---------- Helper / inputs ---------- */
+.helper{background:rgba(4,12,10,.5);border:1px solid var(--line);border-radius:20px;padding:24px;margin:20px 0}
+.helper-grid{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.85rem;color:var(--mut)}
+.field input{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;color:var(--tx);padding:11px 14px;font-family:inherit;font-size:1rem;width:110px;text-align:center;font-weight:700;transition:.25s}
+.field input:focus{outline:none;border-color:var(--em);box-shadow:0 0 0 3px rgba(52,211,153,.15)}
+.helper-out{margin-top:18px;display:none;animation:fadeUp .5s}
+.case-chip{display:inline-block;padding:6px 16px;border-radius:99px;font-weight:800;font-size:.85rem;margin-left:8px}
+.chip1{background:rgba(52,211,153,.15);color:var(--em);border:1px solid rgba(52,211,153,.4)}
+.chip2{background:rgba(45,212,191,.15);color:var(--teal);border:1px solid rgba(45,212,191,.4)}
+.chip3{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid var(--line2)}
+
+/* ---------- Mini game ---------- */
+.mg-q{direction:ltr;text-align:center;font-size:1.35rem;font-weight:800;background:rgba(4,12,10,.5);border-radius:16px;padding:22px;margin:14px 0;border:1px solid var(--line)}
+.mg-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.mg-dots{display:flex;gap:7px;justify-content:center;margin-top:14px}
+.mg-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.12);transition:.3s}
+.mg-dot.done-ok{background:var(--ok);box-shadow:0 0 8px rgba(74,222,128,.6)}
+.mg-dot.done-err{background:var(--red)}
+.mg-dot.cur{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- Exercises ---------- */
+.ex-card,.qz-card{background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:24px;margin:18px 0}
+.ex-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.ex-badge{background:var(--grad);color:#06281e;font-weight:900;font-size:.75rem;padding:4px 12px;border-radius:99px}
+.ex-badge.hard{background:var(--gradG);color:#3a2503}
+.ex-star{color:var(--gold);font-size:.85rem}
+.ex-q{direction:ltr;text-align:center;font-size:1.18rem;font-weight:800;background:rgba(4,12,10,.5);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;margin:12px 0}
+.answer-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.answer-row input{background:rgba(255,255,255,.05);border:1.5px solid var(--line2);border-radius:12px;color:var(--gold);padding:12px 16px;font-family:inherit;font-size:1.05rem;width:150px;text-align:center;font-weight:800;transition:.25s}
+.answer-row input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(251,191,36,.15)}
+.answer-row input.ok{border-color:var(--ok);color:var(--ok)}
+.answer-row input.no{border-color:var(--red);animation:shake .45s}
+.hint-lbl{font-size:.82rem;color:var(--mut)}
+
+/* ---------- Summary ---------- */
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+.sum-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:18px;padding:20px}
+.sum-card h4{color:var(--em);margin-bottom:8px;font-size:1rem}
+.sum-card .ff{direction:ltr;unicode-bidi:isolate;display:block;text-align:center;font-weight:800;font-size:1.05rem;background:rgba(4,12,10,.45);border-radius:12px;padding:10px;margin:8px 0}
+.sum-card p{font-size:.88rem;margin:4px 0}
+
+footer{position:relative;z-index:2;text-align:center;color:var(--mut);font-size:.85rem;padding:30px 20px 50px;border-top:1px solid var(--line)}
+footer .heart{color:var(--red)}
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+@media (max-width:640px){
+  section.card{padding:26px 18px;border-radius:20px}
+  .formula-box{font-size:1.05rem;padding:16px 10px}
+  .step-list li{padding:10px 52px 10px 10px}
+  .nav-logo span{display:none}
+  .score-badge{font-size:.72rem;padding:5px 10px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+/* ================= فصل ۹ + آزمون جامع ================= */
+.ch9-divider{position:relative;z-index:2;margin:70px 0 10px;padding:60px 26px;border-radius:30px;text-align:center;overflow:hidden;
+ background:linear-gradient(135deg,#0f766e,#0d9488,#2563eb);background-size:280% 280%;animation:chShift 16s ease infinite;
+ box-shadow:0 24px 70px rgba(13,148,136,.35);border:1px solid rgba(255,255,255,.14)}
+.ch9-divider.examv{background:linear-gradient(135deg,#4c1d95,#be185d,#312e81);box-shadow:0 24px 70px rgba(147,51,234,.35)}
+@keyframes chShift{0%,100%{background-position:0% 40%}50%{background-position:100% 60%}}
+.ch9-divider h2{font-size:clamp(1.4rem,3.8vw,2.2rem);font-weight:900;color:#fff;line-height:1.8}
+.ch9-divider p{color:rgba(255,255,255,.93);max-width:780px;margin:14px auto 0;font-size:.98rem}
+.ch9-divider .badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 18px;border-radius:99px;font-size:.85rem;font-weight:800;margin-bottom:16px}
+.ch9-divider .sym{position:absolute;color:rgba(255,255,255,.15);font-weight:900;font-size:2.1rem;animation:floaty 7s ease-in-out infinite;pointer-events:none}
+.topic-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:26px auto 0;max-width:860px}
+.topic-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 16px;text-decoration:none;color:#fff;transition:.3s;display:block}
+.topic-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.16)}
+.topic-card b{color:#fde68a;display:block;margin-bottom:3px;font-size:.92rem}
+.topic-card span{font-size:.8rem;opacity:.85;direction:ltr;unicode-bidi:isolate;display:block}
+.ex-q.txt{direction:rtl;text-align:center}
+.mini-chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.mini-chips span{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:99px;padding:5px 14px;font-size:.8rem;color:var(--mut)}
+.opt.txt{direction:rtl;text-align:start;line-height:1.9}
+.opt.picked{border-color:var(--gold);background:rgba(251,191,36,.08);box-shadow:0 0 0 1px rgba(251,191,36,.4)}
+.exq{direction:rtl;unicode-bidi:isolate;text-align:center;font-size:1.18rem;font-weight:800;background:rgba(4,12,10,.5);border:1px solid var(--line);border-radius:16px;padding:22px 16px;margin:14px 0;line-height:2.3}
+.exam-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px}
+.exam-chips{display:flex;gap:8px;flex-wrap:wrap}
+.tchip{background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.35);color:var(--teal);padding:5px 14px;border-radius:99px;font-size:.8rem;font-weight:800}
+.tchip.gold{background:rgba(251,191,36,.1);border-color:var(--line2);color:var(--gold)}
+.eprogress{height:10px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin:6px 0 16px;border:1px solid rgba(255,255,255,.05)}
+.eprogress i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);box-shadow:0 0 10px rgba(45,212,191,.6);transition:width .45s ease}
+.modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+.mode{border:none;cursor:pointer;font-family:inherit;font-weight:800;color:#06281e;background:var(--grad);border-radius:18px;padding:18px 28px;font-size:1rem;transition:.3s;box-shadow:0 10px 26px rgba(45,212,191,.25);text-align:center}
+.mode small{display:block;font-weight:700;font-size:.74rem;opacity:.75;margin-top:3px}
+.mode:hover{transform:translateY(-4px)}
+.mode.gold{background:var(--gradG);color:#3a2503;box-shadow:0 10px 26px rgba(251,191,36,.25)}
+.mode.ghosty{background:transparent;color:var(--em);border:1.5px solid var(--em);box-shadow:none}
+.ringbox{position:relative;width:170px;height:170px;margin:16px auto}
+.ringbox svg{transform:rotate(-90deg)}
+.ringbox .bgc{fill:none;stroke:rgba(255,255,255,.07);stroke-width:11}
+.ringbox .fgc{fill:none;stroke-width:11;stroke-linecap:round;transition:stroke-dashoffset 1.3s ease}
+.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.ring-num b{font-size:1.65rem;color:var(--gold)}
+.ring-num span{font-size:.74rem;color:var(--mut)}
+.final-msg{text-align:center;font-size:1.12rem;font-weight:800;margin:10px 0 4px;color:var(--gold)}
+.final-detail{text-align:center;color:var(--mut);font-size:.92rem;margin-bottom:8px}
+.review-list{display:grid;gap:8px;margin:18px 0}
+.rev{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:.88rem}
+.rev .ic{font-weight:900;flex:0 0 auto}
+.rev.ok{border-color:rgba(74,222,128,.35)} .rev.ok .ic{color:var(--ok)}
+.rev.err{border-color:rgba(248,113,113,.35)} .rev.err .ic{color:var(--red)}
+.rev .rq{flex:1;line-height:1.9}
+.center{text-align:center}
+.hidden{display:none !important}
+
+
+/* ================= بهبودهای دسترس‌پذیری و فصل کسرهای مصری ================= */
+:root{
+  --primitive-forest-950:oklch(18% .035 155);
+  --primitive-forest-800:oklch(31% .07 155);
+  --primitive-paper-100:oklch(97% .008 145);
+  --primitive-sage-300:oklch(84% .025 145);
+  --semantic-surface-raised:oklch(22% .035 155 / .88);
+  --semantic-text-strong:var(--primitive-paper-100);
+  --semantic-border-soft:oklch(84% .025 145 / .2);
+  --component-lab-bg:var(--semantic-surface-raised);
+}
+section.card,.ch9-divider{scroll-margin-top:86px}
+a,button,input,summary{outline-offset:4px}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+button,a{-webkit-tap-highlight-color:transparent}
+button{min-height:44px}
+.nav-tools{display:flex;align-items:center;gap:6px}
+.icon-btn{width:44px;height:44px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:var(--tx);cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+.icon-btn:hover{transform:translateY(-2px);background:rgba(52,211,153,.1);border-color:var(--em)}
+.icon-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.back-top{position:fixed;left:20px;bottom:20px;z-index:45;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+.back-top.show{opacity:1;visibility:visible;transform:none}
+body.font-large{font-size:18px}
+body.font-xlarge{font-size:20px}
+body.font-large p,body.font-xlarge p{line-height:2}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.egy-divider{position:relative;z-index:2;margin:72px 0 18px;padding:54px 42px;border:1px solid var(--semantic-border-soft);border-radius:28px;overflow:hidden;background:var(--primitive-forest-950);box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.egy-hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:36px;align-items:center;position:relative;z-index:1}
+.egy-divider .badge{display:inline-block;color:var(--gold);border:1px solid var(--line2);padding:6px 16px;border-radius:99px;font-size:.84rem;font-weight:800;margin-bottom:14px}
+.egy-divider h2{font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.5;color:var(--primitive-paper-100);font-weight:900}
+.egy-divider p{color:#d2d8d0;max-width:680px;margin:14px 0 0;font-size:1rem}
+.egy-symbol{direction:ltr;display:flex;align-items:center;justify-content:center;gap:14px;font-weight:900;color:var(--gold);font-size:clamp(1.35rem,4vw,2.2rem);min-height:190px;position:relative}
+.egy-symbol:before,.egy-symbol:after{content:'';position:absolute;border:1px solid var(--semantic-border-soft);border-radius:50%;inset:8%}
+.egy-symbol:after{inset:22%;border-style:dashed}
+.egy-symbol>*{position:relative;z-index:1}
+.egy-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+.egy-map a{display:flex;align-items:center;gap:10px;color:var(--tx);text-decoration:none;border-bottom:1px solid var(--line);padding:12px 8px;transition:color .2s ease,transform .2s ease}
+.egy-map a:hover{color:var(--gold);transform:translateX(-4px)}
+.egy-map b{font-size:.85rem;color:var(--gold)}
+.egy-map span{font-size:.86rem}
+
+.learning-targets{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.learning-targets span{font-size:.8rem;color:var(--primitive-sage-300);border:1px solid var(--semantic-border-soft);padding:5px 12px;border-radius:99px}
+.visual-def{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin:22px 0}
+.fraction-stage{background:var(--component-lab-bg);border:1px solid var(--semantic-border-soft);border-radius:20px;padding:24px;text-align:center}
+.fraction-stage .big-fraction{font-size:2.5rem;color:var(--gold)}
+.unit-strip{direction:ltr;display:flex;width:100%;height:58px;margin:20px 0 12px;border:2px solid var(--primitive-sage-300);border-radius:10px;overflow:hidden;background:rgba(0,0,0,.12)}
+.unit-strip i{flex:1;border-right:1px solid var(--primitive-forest-950);transition:background .2s ease,transform .2s ease}
+.unit-strip i:last-child{border-right:0}
+.unit-strip i.on{background:var(--gold)}
+.lab-controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.lab-controls input[type=range]{width:min(260px,100%);accent-color:var(--gold);cursor:pointer;min-height:44px}
+.lab-value{font-weight:900;color:var(--gold);min-width:90px;text-align:center}
+.mini-label{font-size:.82rem;color:var(--mut)}
+.egy-equation{direction:ltr;unicode-bidi:isolate;text-align:center;font-size:clamp(1.1rem,3.5vw,1.55rem);font-weight:800;line-height:2.4;padding:18px 12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:18px 0;color:var(--tx)}
+.proof-steps{display:grid;gap:0;margin:18px 0}
+.proof-step{position:relative;padding:16px 54px 16px 8px;border-bottom:1px solid var(--line)}
+.proof-step:last-child{border-bottom:0}
+.proof-step b{position:absolute;right:4px;top:16px;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:50%;color:var(--gold)}
+.proof-step p{margin:0}
+.formula-lab{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:24px 0;margin:24px 0}
+.lab-grid{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.lab-input{display:flex;flex-direction:column;gap:8px}
+.lab-input label{font-weight:800;color:var(--tx)}
+.lab-input input{width:100%;min-height:48px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:12px;color:var(--gold);padding:10px 14px;font:800 1.15rem 'Vazirmatn',sans-serif;text-align:center}
+.lab-result{min-height:110px}
+.lab-result .feedback{margin-top:10px}
+.key-point{padding:18px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:150px 1fr;gap:16px}
+.key-point:last-child{border-bottom:0}
+.key-point h4{color:var(--gold);margin:0}
+.key-point p{margin:0}
+
+.divisor-board{display:grid;grid-template-columns:.8fr 1.2fr;gap:24px;margin:20px 0;align-items:start}
+.divisor-choices{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.divisor-chip{min-width:58px;min-height:48px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:var(--tx);font:800 1.05rem 'Vazirmatn',sans-serif;cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+.divisor-chip:hover{transform:translateY(-2px);border-color:var(--em)}
+.divisor-chip.selected{background:var(--gold);border-color:var(--gold);color:#3a2503}
+.divisor-chip:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.sum-meter{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line);font-weight:800}
+.sum-meter strong{color:var(--gold)}
+.builder-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.builder-visual{direction:ltr;min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.3rem;font-weight:800;color:var(--teal)}
+.divisor-progress{display:flex;gap:6px;justify-content:center;margin:10px 0}
+.divisor-progress i{width:34px;height:5px;border-radius:99px;background:rgba(255,255,255,.1)}
+.divisor-progress i.done{background:var(--ok)}
+.egy-summary{border:1px solid var(--line2);border-radius:20px;padding:24px;margin-top:22px;background:rgba(251,191,36,.04)}
+.egy-summary ol{padding-right:22px}
+.egy-summary li{margin:10px 0}
+.egy-final-score{text-align:center;font-weight:800;color:var(--gold);margin-top:16px}
+
+@media(max-width:800px){
+  .nav-in{gap:8px;padding-inline:12px}.nav-tools{gap:4px}.score-badge{display:none}
+  .egy-hero-grid,.visual-def,.divisor-board{grid-template-columns:1fr}
+  .egy-symbol{min-height:130px;order:-1}.egy-symbol:before{inset:0 20%}.egy-symbol:after{inset:12% 30%}
+  .egy-map{grid-template-columns:repeat(2,1fr)}
+  .lab-grid{grid-template-columns:1fr;gap:14px}.lab-input{max-width:280px}
+  .key-point{grid-template-columns:1fr;gap:4px}
+}
+@media(max-width:480px){
+  .egy-divider{padding:34px 20px}.egy-map{grid-template-columns:1fr}.egy-map a{padding:10px 4px}
+  .fraction-stage{padding:18px 12px}.unit-strip{height:48px}.formula-box{overflow-x:auto}
+  .back-top{left:12px;bottom:12px}.nav-logo{display:none}.nav-links a{padding-inline:9px}
+}
+@media print{
+  body{background:#fff!important;color:#181818!important;font-size:12pt}.topnav,.progress-wrap,#bgCanvas,.back-top,.scroll-hint,.cta-row,.quiz-actions,.lab-controls,.builder-actions{display:none!important}
+  .hero{min-height:auto;padding:30px}.hero-title,.sec-head h2{color:#181818!important;background:none;-webkit-text-fill-color:#181818}
+  section.card,.egy-divider{opacity:1!important;transform:none!important;background:#fff!important;color:#181818!important;box-shadow:none!important;border:1px solid #bbb;break-inside:avoid;margin:16px 0}
+  p,.lead,.egy-divider p,.cmp td{color:#222!important}.formula-box,.fraction-stage,.ex-card,.qz-card,.helper{background:#f7f7f7!important;color:#181818!important;box-shadow:none}
+  .sol-box{max-height:none!important}.feedback{display:none!important}
+}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+<nav class="topnav">
+  <div class="nav-in">
+    <div class="nav-logo">🌲 <span>کسرهای تلسکوپی</span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#s1">تعریف</a><a href="#s2">حالت اول</a><a href="#s3">حالت دوم</a><a href="#s4">حالت سوم</a><a href="#s5">مقایسه</a><a href="#s6">تشخیص</a><a href="#s7">ترکیبی</a><a href="#s8">تمرین‌ها</a><a href="#ch9">فرمول‌های مجموع</a><a href="#n6">آزمون فصل ۹</a><a href="#egy">کسرهای مصری</a><a href="#exam">آزمون جامع</a>
+    </div>
+    <div class="score-badge">🏆 امتیاز: <span id="score">۰</span>/<span id="scoreMax">۵</span></div>
+    <div class="nav-tools">
+      <button class="icon-btn" id="fontToggle" type="button" aria-label="بزرگ‌تر کردن متن" title="تغییر اندازه متن"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18 9 6h2l5 12M6 14h8M18 9v6M15 12h6"/></svg></button>
+      <button class="icon-btn" id="printLesson" type="button" aria-label="چاپ درس" title="چاپ یا ذخیره PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7z"/></svg></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="float-sym" style="top:14%;right:8%;font-size:2.4rem;animation-delay:0s">Σ</div>
+  <div class="float-sym" style="top:22%;left:10%;font-size:1.9rem;animation-delay:1.2s">½</div>
+  <div class="float-sym" style="bottom:20%;right:14%;font-size:2.1rem;animation-delay:2s">×</div>
+  <div class="float-sym" style="bottom:26%;left:9%;font-size:1.7rem;animation-delay:.6s">−</div>
+  <div class="float-sym" style="top:48%;right:5%;font-size:1.5rem;animation-delay:1.7s">÷</div>
+  <div class="hero-kicker">✨ ریاضیِ جادویی برای متوسطه اول</div>
+  <h1 class="hero-title">کسرهای تلسکوپی</h1>
+  <p class="hero-sub">جمله‌ها یکی‌یکی محو می‌شوند و فقط دو سر زنجیره باقی می‌ماند — مثل تلسکوپی که جمع می‌شود!
+  <span class="hero-frac"><span class="n">۱</span><span class="fd">۲</span></span> و
+  <span class="hero-frac"><span class="n">۱</span><span class="fd">۳</span></span> را با هم کشف کنیم.</p>
+  <div class="cta-row">
+    <a href="#s1" class="btn">🚀 شروع یادگیری</a>
+    <a href="#s8" class="btn btn-ghost">🎯 پرش به تمرین‌ها</a>
+    <a href="#ch9" class="btn btn-gold">🧮 فصل فرمول‌های مجموع</a>
+    <a href="#egy" class="btn btn-ghost">فصل جدید: کسرهای مصری</a>
+  </div>
+  <div class="scroll-hint">▼ پایین برو</div>
+</header>
+
+<div class="container wrap">
+
+<!-- ============ SECTION 1 ============ -->
+<section class="card" id="s1">
+  <div class="sec-head"><div class="sec-num">۱</div><h2>کسر تلسکوپی چیست؟</h2></div>
+  <p class="lead">قبل از هر چیز، بیا بفهمیم این اسم عجیب از کجا آمده!</p>
+  <p><strong>کسر تلسکوپی</strong> مجموعی از کسرهاست که در آن، جمله‌های میانی هنگام جمع، <em class="g">یکدیگر را حذف می‌کنند</em> و فقط جمله‌های اول و آخر باقی می‌مانند. به این مجموع «تلسکوپی» می‌گوییم چون دقیقاً مثل یک تلسکوپ (دوربین دوچشمی) است: وقتی آن را جمع می‌کنی، همه‌ی قسمت‌های میانی داخل هم می‌روند و فقط دو سر آن دیده می‌شود!</p>
+  <p>رمز ماجرا این است که هر کسر را بتوانیم به <em class="e">تفاضل دو کسر ساده</em> تبدیل کنیم؛ آن‌وقت منفیِ هر جمله، مثبتِ جمله‌ی بعدی را خنثی می‌کند. بیایم با یک مثال ساده ببینیم چطور:</p>
+
+  <div class="formula-box gold">
+    <span class="frac"><span class="fn">۱</span><span class="fd">۱×۲</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲×۳</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۳×۴</span></span> = ؟
+  </div>
+
+  <p><strong>روش معمولی (بدون ترفند):</strong> باید هر سه کسر را با مخرج مشترک ۱۲ جمع کنیم:</p>
+  <div class="formula-box">
+    <span class="frac"><span class="fn">۶</span><span class="fd">۱۲</span></span> +
+    <span class="frac"><span class="fn">۲</span><span class="fd">۱۲</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۱۲</span></span> =
+    <span class="frac"><span class="fn">۹</span><span class="fd">۱۲</span></span> =
+    <span class="frac big" style="color:var(--gold)"><span class="fn">۳</span><span class="fd">۴</span></span>
+  </div>
+  <p>کار کرد، ولی اگر ده جمله داشت چه؟ مخرج مشترک عظیم می‌شود! حالا <em class="e">ترفند تلسکوپی</em> را ببین. کلید حل این دو تساوی است:</p>
+
+  <div class="formula-box">
+    <span class="frac"><span class="fn">۱</span><span class="fd">۱×۲</span></span> =
+    <span class="frac"><span class="fn">۱</span><span class="fd">۱</span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲</span></span> ،
+    <span class="eq" style="direction:rtl">و به همین شکل:</span>
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲×۳</span></span> =
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲</span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">۳</span></span>
+  </div>
+
+  <div class="tip-box"><div class="box-title">🤔 چرا این تساوی درست است؟</div>
+  <p>برای <span class="m">1/(a×b)</span> کافی است <span class="m">1/a</span> و <span class="m">1/b</span> را با مخرج مشترک <span class="m">a×b</span> تفریق کنیم: <span class="m">(b − a)/(a×b)</span> . وقتی دو عدد مخرج فقط ۱ واحد اختلاف دارند (مثل ۱ و ۲)، صورت تفاضل یعنی <span class="m">b−a</span> می‌شود ۱ و دقیقاً برابر صورت کسر اولیه است. پس <span class="m">1/(1×2) = 1/1 − 1/2</span> ✓</p></div>
+
+  <p>حالا همه را با هم بنویسیم و جمله‌به‌جمله جمع کنیم:</p>
+  <div class="formula-box" id="tel1">
+    <span class="frac"><span class="fn">۱</span><span class="fd">۱</span></span> −
+    <span class="term" data-pair="p1"><span class="frac"><span class="fn">۱</span><span class="fd">۲</span></span></span> +
+    <span class="term" data-pair="p1"><span class="frac"><span class="fn">۱</span><span class="fd">۲</span></span></span> −
+    <span class="term" data-pair="p2"><span class="frac"><span class="fn">۱</span><span class="fd">۳</span></span></span> +
+    <span class="term" data-pair="p2"><span class="frac"><span class="fn">۱</span><span class="fd">۳</span></span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">۴</span></span>
+  </div>
+  <div class="quiz-actions">
+    <button class="btn btn-gold" data-cancel="tel1 tel2" id="cancelBtn1">🪄 اجرای جادوی حذف!</button>
+  </div>
+  <p style="margin-top:14px">هر <em class="g">جفت هم‌رنگ</em> که خط قرمز رویشان کشیده می‌شود، دقیقاً برعکس هم‌اند (<span class="m">−1/2 + 1/2 = 0</span>) و حذف می‌شوند. باقی می‌ماند:</p>
+  <div class="formula-box">
+    ۱ −
+    <span class="frac big" style="color:var(--gold)"><span class="fn">۱</span><span class="fd">۴</span></span> =
+    <span class="frac big" style="color:var(--gold)"><span class="fn">۳</span><span class="fd">۴</span></span> ✓
+  </div>
+  <p>دیدی؟ حتی اگر صد جمله هم داشتیم، بدون مخرج مشترکِ غول‌آسا و فقط با نوشتن دو سر زنجیره، جواب آماده است!</p>
+
+  <div class="quiz" data-answer="b" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — مبحث تعریف</span>
+    <div class="quiz-q">حاصل این مجموع کدام است؟ <span class="m">1/(1×2) + 1/(2×3) + 1/(3×4) + 1/(4×5)</span></div>
+    <div class="opts">
+      <button class="opt" data-v="a">۵/۶</button>
+      <button class="opt" data-v="b">۴/۵</button>
+      <button class="opt" data-v="c">۱/۵</button>
+      <button class="opt" data-v="d">۱/۱۲۰</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل گام‌به‌گام</button>
+    </div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <ol class="step-list">
+        <li>هر کسر را به تفاضل تبدیل می‌کنیم: <div class="inner">1/2 = 1/1 − 1/2 ، 1/6 = 1/2 − 1/3 ، 1/12 = 1/3 − 1/4 ، 1/20 = 1/4 − 1/5</div></li>
+        <li>جمله‌های میانی دوبار ظاهر می‌شوند: یک‌بار مثبت، یک‌بار منفی ⇒ حذف می‌شوند.</li>
+        <li>فقط دو سر باقی می‌ماند: <div class="inner">1 − 1/5 = 4/5 ✓</div></li>
+      </ol>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 ============ -->
+<section class="card" id="s2">
+  <div class="sec-head"><div class="sec-num">۲</div><h2>حالت اول: صورت برابر اختلاف دو عدد مخرج</h2></div>
+  <p class="lead">وقتی صورت کسر، همان فاصله‌ی دو عدد مخرج باشد — کار تمام است، بدون هیچ ضریبی!</p>
+  <p>در بخش قبل، مخرج‌های ما فقط ۱ واحد اختلاف داشتند. ولی حالا کلی‌تر فکر می‌کنیم. فرض کن مخرج کسر، حاصل‌ضرب <strong>a و b</strong> باشد و صورت کسر دقیقاً <em class="g">اختلاف این دو عدد یعنی b − a</em> باشد. در این صورت تساوی طلایی زیر همیشه برقرار است:</p>
+
+  <div class="formula-box gold">
+    <span class="frac big"><span class="fn">b − a</span><span class="fd">a×b</span></span> =
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac big"><span class="fn">۱</span><span class="fd">b</span></span>
+  </div>
+
+  <div class="tip-box"><div class="box-title">✅ اثبات (چرا این فرمول همیشه درست است؟)</div>
+  <p>دو کسر سمت راست را با مخرج مشترک <span class="m">a×b</span> تفریق می‌کنیم: برای اینکه <span class="m">1/a</span> مخرجش شود <span class="m">a×b</span> باید صورت و مخرجش را در <span class="m">b</span> ضرب کنیم، و برای <span class="m">1/b</span> در <span class="m">a</span> :</p>
+  <div class="formula-box">
+    <span class="frac"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">b</span></span> =
+    <span class="frac"><span class="fn">b</span><span class="fd">a×b</span></span> −
+    <span class="frac"><span class="fn">a</span><span class="fd">a×b</span></span> =
+    <span class="frac"><span class="fn">b − a</span><span class="fd">a×b</span></span> ✓
+  </div>
+  <p>پس <strong>صورت</strong> نتیجه‌ی تفریق، دقیقاً همان <em class="e">اختلاف دو عدد مخرج</em> است. به همین دلیل این حالت «بدون دردسر» است: کسر مستقیماً به تفاضل دو کسر تبدیل می‌شود و هیچ ضریبی لازم ندارد.</p></div>
+
+  <div class="note-box"><div class="box-title">🔎 دقت کن!</div>
+  <p>در مثال بخش قبل، صورت هر کسر ۱ بود و اختلاف مخرج‌ها هم ۱ (چون <span class="m">2−1=1</span>). پس آن مثال در واقع «حالت اول» با اختلاف ۱ بود! حالا ببینیم وقتی اختلاف مخرج‌ها ۱ نیست ولی صورت با آن برابر است، چه می‌شود.</p></div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شده</h3>
+  <div class="formula-box gold">
+    <span class="frac"><span class="fn">۲−۱</span><span class="fd">۱×۲</span></span> +
+    <span class="frac"><span class="fn">۳−۲</span><span class="fd">۲×۳</span></span> +
+    <span class="frac"><span class="fn">۴−۳</span><span class="fd">۳×۴</span></span>
+  </div>
+  <ol class="step-list">
+    <li><strong>اختلاف مخرج‌های هر کسر را بررسی کن:</strong> در کسر اول <span class="m">2−1=1</span> و صورت هم ۱ است ✓؛ در کسر دوم <span class="m">3−2=1</span> و صورت ۱ است ✓؛ در کسر سوم هم همین‌طور. پس هر سه در حالت اول هستند.</li>
+    <li><strong>هر کسر را به تفاضل دو کسر تبدیل کن</strong> (طبق فرمول طلایی):<div class="inner">(2−1)/(1×2) = 1/1 − 1/2 ، (3−2)/(2×3) = 1/2 − 1/3 ، (4−3)/(3×4) = 1/3 − 1/4</div></li>
+    <li><strong>همه را کنار هم بنویس:</strong><div class="inner" id="tel2">1/1 − <span class="term" data-pair="q1">1/2</span> + <span class="term" data-pair="q1">1/2</span> − <span class="term" data-pair="q2">1/3</span> + <span class="term" data-pair="q2">1/3</span> − 1/4</div></li>
+    <li><strong>جمله‌های میانی حذف می‌شوند</strong> چون هر کدام یک‌بار با علامت + و یک‌بار با علامت − آمده‌اند و برعکس یکدیگرند: <span class="m">−1/2 + 1/2 = 0</span> و <span class="m">−1/3 + 1/3 = 0</span> .</li>
+    <li><strong>جواب نهایی فقط از دو سر زنجیره به دست می‌آید:</strong><div class="inner">1 − 1/4 = <b style="color:var(--gold)">3/4</b></div></li>
+  </ol>
+
+  <p>و مثال دیگری که نشان می‌دهد اختلاف مخرج‌ها لازم نیست ۱ باشد — کافی است <strong>صورت با آن اختلاف برابر باشد</strong> (اینجا اختلاف ۳ و صورت هم ۳):</p>
+  <div class="formula-box">
+    <span class="frac"><span class="fn">۳</span><span class="fd">۲×۵</span></span> +
+    <span class="frac"><span class="fn">۳</span><span class="fd">۵×۸</span></span> +
+    <span class="frac"><span class="fn">۳</span><span class="fd">۸×۱۱</span></span>
+    =
+    <span class="grp">(۱/۲ − ۱/۵)</span> +
+    <span class="grp">(۱/۵ − ۱/۸)</span> +
+    <span class="grp">(۱/۸ − ۱/۱۱)</span>
+    = ۱/۲ − ۱/۱۱ =
+    <span class="frac big" style="color:var(--gold)"><span class="fn">۹</span><span class="fd">۲۲</span></span>
+  </div>
+
+  <div class="quiz" data-answer="c" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — حالت اول</span>
+    <div class="quiz-q">حاصل <span class="m">3/(2×5) + 3/(5×8) + 3/(8×11)</span> کدام است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۳/۲۲</button>
+      <button class="opt" data-v="b">۱/۲۲</button>
+      <button class="opt" data-v="c">۹/۲۲</button>
+      <button class="opt" data-v="d">۲/۱۱</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل گام‌به‌گام</button>
+    </div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <ol class="step-list">
+        <li>صورت هر کسر ۳ است؛ اختلاف مخرج‌ها هم: <span class="m">5−2=3</span> ، <span class="m">8−5=3</span> ، <span class="m">11−8=3</span> ⇒ حالت اول!</li>
+        <li>بدون ضریب، تفریق کن: <div class="inner">(1/2 − 1/5) + (1/5 − 1/8) + (1/8 − 1/11)</div></li>
+        <li>جمله‌های میانی حذف ⇒ <span class="m">1/2 − 1/11 = 11/22 − 2/22 = 9/22</span> ✓</li>
+      </ol>
+    </div></div>
+  </div>
+</section>
+<!-- ============ SECTION 3 ============ -->
+<section class="card" id="s3">
+  <div class="sec-head"><div class="sec-num">۳</div><h2>حالت دوم: صورت برابر ۱ است</h2></div>
+  <p class="lead">رایج‌ترین شکل کسرهای تلسکوپی در کتاب‌ها و آزمون‌ها!</p>
+  <p>این‌بار مخرج کسر از حاصل‌ضرب دو عدد <strong>a و (a+d)</strong> ساخته شده که اختلافشان <em class="g">d</em> است، ولی صورت کسر فقط <strong>۱</strong> است. اوووپس! صورت ۱ با اختلاف d برابر نیست (به‌جز وقتی d=۱). پس می‌توانیم مستقیم تفریق کنیم؟ <span class="wrong">نه!</span> باید یک <em class="e">ضریب ۱/d</em> وارد ماجرا کنیم:</p>
+
+  <div class="formula-box gold">
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a(a+d)</span></span> =
+    <span class="paren">(</span><span class="frac big"><span class="fn">۱</span><span class="fd">d</span></span><span class="paren">)</span>
+    <span class="paren big" style="font-size:1.35em;color:var(--em)">(</span>
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a+d</span></span>
+    <span class="paren big" style="font-size:1.35em;color:var(--em)">)</span>
+  </div>
+
+  <div class="tip-box"><div class="box-title">✅ اثبات فرمول — چرا ضریب ۱/d لازم است؟</div>
+  <p>اول دو کسر <span class="m">1/a</span> و <span class="m">1/(a+d)</span> را با مخرج مشترک <span class="m">a(a+d)</span> تفریق می‌کنیم:</p>
+  <div class="formula-box">
+    <span class="frac"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">a+d</span></span> =
+    <span class="frac"><span class="fn">(a+d) − a</span><span class="fd">a(a+d)</span></span> =
+    <span class="frac"><span class="fn">d</span><span class="fd">a(a+d)</span></span>
+  </div>
+  <p>می‌بینی؟ تفریقِ دو کسر، صورتش <span class="m">d</span> می‌شود، نه ۱! پس برای اینکه به کسر اصلی با صورت ۱ برسیم، باید کل نتیجه را در <span class="m">1/d</span> ضرب کنیم تا صورت <span class="m">d</span> با <span class="m">1/d</span> خنثی شود: <span class="m">(1/d) × d/(a(a+d)) = 1/(a(a+d))</span> ✓</p>
+  <p><strong>به همین دلیل است که اختلاف دو عدد مخرج اهمیت دارد:</strong> چون تفاضلِ تجزیه، خودش را به شکل همان اختلاف در صورت نشان می‌دهد و ما باید نسبت بین صورت کسر (۱) و اختلاف مخرج‌ها (d) را با ضریب تنظیم کنیم.</p></div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شده (دقیقاً طبق ۵ مرحله)</h3>
+  <div class="formula-box gold">
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲×۵</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۵×۸</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۸×۱۱</span></span>
+  </div>
+  <ol class="step-list">
+    <li><strong>اختلاف اعداد مخرج را پیدا کن:</strong> <span class="m">5−2=3</span> ، <span class="m">8−5=3</span> ، <span class="m">11−8=3</span> ⇒ پس <span class="m">d = 3</span> است (دقت کن: لزوماً ۱ نیست!).</li>
+    <li><strong>هر کسر را به تفاضل دو کسر تبدیل کن</strong> — صورت ۱ را به شکل d = 3 بنویسیم یعنی در ۳ ضرب و تقسیم کنیم:<div class="inner">1/(2×5) = (1/3)(1/2 − 1/5) ، 1/(5×8) = (1/3)(1/5 − 1/8) ، 1/(8×11) = (1/3)(1/8 − 1/11)</div></li>
+    <li><strong>ضریب مشترک را از مجموع خارج کن</strong> (خاصیت توزیع):<div class="inner">(1/3) × [ (1/2 − 1/5) + (1/5 − 1/8) + (1/8 − 1/11) ]</div></li>
+    <li><strong>جمله‌های میانی را حذف کن:</strong> داخل کروشه، <span class="m">−1/5 + 1/5 = 0</span> و <span class="m">−1/8 + 1/8 = 0</span> می‌شوند ⇒ فقط <span class="m">1/2 − 1/11</span> می‌ماند.</li>
+    <li><strong>جواب نهایی را حساب کن:</strong><div class="inner">(1/3) × (1/2 − 1/11) = (1/3) × (11/22 − 2/22) = (1/3) × (9/22) = <b style="color:var(--gold)">3/22</b></div></li>
+  </ol>
+  <div class="note-box"><div class="box-title">🚨 رایج‌ترین اشتباه در این حالت</div>
+  <p><span class="wrong">✗ غلط:</span> نوشتن <span class="m">1/(2×5) = 1/2 − 1/5</span> بدون ضریب ۱/۳ — این برابر نیست! چون <span class="m">1/2 − 1/5 = 3/10</span> است ولی <span class="m">1/(2×5) = 1/10</span> .<br><span class="right">✓ درست:</span> همیشه ضریب <span class="m">1/d</span> را جلوی پرانتز بگذار: <span class="m">(1/3)(1/2 − 1/5) = (1/3)(3/10) = 1/10</span> ✓</p></div>
+
+  <div class="quiz" data-answer="a" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — حالت دوم</span>
+    <div class="quiz-q">حاصل <span class="m">1/(1×4) + 1/(4×7) + 1/(7×10)</span> کدام است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۳/۱۰</button>
+      <button class="opt" data-v="b">۹/۱۰</button>
+      <button class="opt" data-v="c">۱/۳</button>
+      <button class="opt" data-v="d">۳/۲۸</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل گام‌به‌گام</button>
+    </div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <ol class="step-list">
+        <li>اختلاف مخرج‌ها: <span class="m">4−1=3</span> ، <span class="m">7−4=3</span> ، <span class="m">10−7=3</span> ⇒ <span class="m">d=3</span> و صورت‌ها ۱ هستند ⇒ حالت دوم.</li>
+        <li>تجزیه: <div class="inner">(1/3)(1/1 − 1/4) + (1/3)(1/4 − 1/7) + (1/3)(1/7 − 1/10)</div></li>
+        <li>ضریب مشترک را خارج کن و حذف کن: <div class="inner">(1/3) × (1/1 − 1/10) = (1/3) × (9/10) = <b>3/10</b> ✓</div></li>
+      </ol>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 ============ -->
+<section class="card" id="s4">
+  <div class="sec-head"><div class="sec-num">۴</div><h2>حالت سوم: صورت عددی غیر از ۱ و برابر با اختلاف نیست</h2></div>
+  <p class="lead">حالت کلی! وقتی صورت، عدد دلخواهی مثل c است که نه ۱ است و نه با اختلاف مخرج‌ها برابر.</p>
+  <p>این حالت، فرم «مادر» هر سه حالت است. مخرج باز هم <strong>a(a+d)</strong> با اختلاف d است، ولی صورت یک عدد دلخواه <em class="g">c</em> است. همان منطق حالت دوم، این‌بار با ضریب <em class="e">c/d</em>:</p>
+
+  <div class="formula-box gold">
+    <span class="frac big"><span class="fn">c</span><span class="fd">a(a+d)</span></span> =
+    <span class="paren">(</span><span class="frac big"><span class="fn">c</span><span class="fd">d</span></span><span class="paren">)</span>
+    <span class="paren big" style="font-size:1.35em;color:var(--em)">(</span>
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac big"><span class="fn">۱</span><span class="fd">a+d</span></span>
+    <span class="paren big" style="font-size:1.35em;color:var(--em)">)</span>
+  </div>
+
+  <div class="tip-box"><div class="box-title">✅ اثبات فرمول</div>
+  <p>طبق اثبات بخش قبل، <span class="m">1/a − 1/(a+d) = d/(a(a+d))</span> . حالا هر دو طرف را در <span class="m">c</span> ضرب می‌کنیم:</p>
+  <div class="formula-box">
+    <span class="frac"><span class="fn">c</span><span class="fd">d</span></span>
+    <span class="paren">(</span><span class="frac"><span class="fn">۱</span><span class="fd">a</span></span> −
+    <span class="frac"><span class="fn">۱</span><span class="fd">a+d</span></span><span class="paren">)</span> =
+    <span class="frac"><span class="fn">c</span><span class="fd">d</span></span> ×
+    <span class="frac"><span class="fn">d</span><span class="fd">a(a+d)</span></span> =
+    <span class="frac big" style="color:var(--gold)"><span class="fn">c</span><span class="fd">a(a+d)</span></span> ✓
+  </div>
+  <p>عدد d صورت و مخرج، یکدیگر را حذف می‌کنند و دقیقاً کسر اصلی به دست می‌آید. پس منطق کاملاً همان حالت دوم است؛ فقط ضریب از <span class="m">1/d</span> به <span class="m">c/d</span> تغییر می‌کند. برای همین هر سه حالت در واقع <strong>یک خانواده</strong> هستند:</p>
+  <p>• اگر <span class="m">c = d</span> باشد ⇒ ضریب <span class="m">c/d = 1</span> می‌شود ⇒ همان <em class="e">حالت اول</em>! &nbsp;&nbsp;• اگر <span class="m">c = 1</span> باشد ⇒ همان <em class="e">حالت دوم</em>!</p></div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شده</h3>
+  <div class="formula-box gold">
+    <span class="frac"><span class="fn">۵</span><span class="fd">۲×۵</span></span> +
+    <span class="frac"><span class="fn">۵</span><span class="fd">۵×۸</span></span> +
+    <span class="frac"><span class="fn">۵</span><span class="fd">۸×۱۱</span></span>
+  </div>
+  <ol class="step-list">
+    <li><strong>اختلاف دو عدد هر مخرج را پیدا کن:</strong> <span class="m">5−2=3</span> ، <span class="m">8−5=3</span> ، <span class="m">11−8=3</span> ⇒ <span class="m">d=3</span> .</li>
+    <li><strong>صورت را با اختلاف مقایسه کن:</strong> صورت ۵ است ولی اختلاف ۳ ⇒ <span class="m">5 ≠ 3</span> پس حالت اول نیست؛ صورت هم ۱ نیست ⇒ <em class="e">حالت سوم</em> با ضریب <span class="m">c/d = 5/3</span> .</li>
+    <li><strong>هر کسر را به تفاضل دو کسر تبدیل کن:</strong><div class="inner">5/(2×5) = (5/3)(1/2 − 1/5) ، 5/(5×8) = (5/3)(1/5 − 1/8) ، 5/(8×11) = (5/3)(1/8 − 1/11)</div></li>
+    <li><strong>ضریب مشترک ۵/۳ را از مجموع خارج کن:</strong><div class="inner">(5/3) × [ (1/2 − 1/5) + (1/5 − 1/8) + (1/8 − 1/11) ]</div></li>
+    <li><strong>حذف جمله‌های میانی:</strong> <span class="m">−1/5 + 1/5 = 0</span> و <span class="m">−1/8 + 1/8 = 0</span> ⇒ می‌ماند <span class="m">(5/3) × (1/2 − 1/11)</span> .</li>
+    <li><strong>جواب نهایی:</strong><div class="inner">(5/3) × (11/22 − 2/22) = (5/3) × (9/22) = 45/66 = <b style="color:var(--gold)">15/22</b></div></li>
+  </ol>
+  <div class="tip-box"><div class="box-title">⚡ راه‌حل هوشمندانه (میان‌بر)</div>
+  <p>چون هر سه صورت یکسان‌اند (همه ۵)، می‌توانی ۵ را از مجموع فاکتور بگیری: <span class="m">5 × [ 1/(2×5) + 1/(5×8) + 1/(8×11) ]</span> . داخل کروشه همان مثال حالت دوم است که جوابش ۳/۲۲ بود! پس: <span class="m">5 × 3/22 = 15/22</span> ✓ — دو روش، یک جواب. این یعنی فرمول‌هایمان با هم سازگارند.</p></div>
+
+  <div class="warn-box"><div class="box-title">⚠️ نکته بسیار مهم: «ضرب کل عبارت» ممنوع!</div>
+  <p>سوال پرتکرار دانش‌آموزها: «آیا باید کل مجموع را در اختلاف مخرج‌ها (d) ضرب کنیم؟»</p>
+  <p><span class="wrong">✗ روش غلط:</span> کل عبارت اصلی را در d ضرب می‌کنیم و تجزیه‌ی بدون ضریب می‌نویسیم. مثلاً می‌گوییم: <span class="m">d × [مجموع اصلی] = (1/2−1/5)+(1/5−1/8)+(1/8−1/11)</span> — این کار <strong>مقدار عبارت را d برابر می‌کند</strong> و دیگر با عبارت اولیه برابر نیست! اگر یک‌وقت مجبور شدی کل عبارت را ضرب کنی (مثلاً به‌عنوان ترفند)، حتماً باید در پایان نتیجه را <em class="g">بر d تقسیم کنی</em> تا برابری حفظ شود.</p>
+  <p><span class="right">✓ روش درست:</span> ضریب <span class="m">c/d</span> را <strong>داخل تجزیه‌ی هر کسر</strong> وارد می‌کنیم؛ یعنی هر کسر جداگانه برابر <span class="m">(c/d)(1/a − 1/(a+d))</span> نوشته می‌شود. سپس اگر همه‌ی جمله‌ها ضریب مشترک یکسانی دارند، آن ضریب را از مجموع خارج می‌کنیم (فاکتور می‌گیریم) — این کار برابری را حفظ می‌کند چون فقط خاصیت توزیع ضرب بر جمع است.</p>
+  <p><strong>خلاصه:</strong> ضربِ کل عبارت = تغییر مقدار (ممنوع مگر با تقسیم جبرانی)؛ ضریب داخل تجزیه = حفظ برابری (درست). مقایسه را با اعداد همین مثال ببین: عبارت اصلی ۱۵/۲۲ است؛ اگر کلش را در ۳ ضرب کنی ۴۵/۲۲ می‌شود که چیز دیگری است!</p></div>
+
+  <div class="quiz" data-answer="d" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — حالت سوم</span>
+    <div class="quiz-q">حاصل <span class="m">6/(1×3) + 6/(3×5) + 6/(5×7)</span> کدام است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۶/۷</button>
+      <button class="opt" data-v="b">۳/۷</button>
+      <button class="opt" data-v="c">۱۸/۳۵</button>
+      <button class="opt" data-v="d">۱۸/۷</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل گام‌به‌گام</button>
+    </div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <ol class="step-list">
+        <li>اختلاف مخرج‌ها: <span class="m">3−1=2</span> ، <span class="m">5−3=2</span> ، <span class="m">7−5=2</span> ⇒ <span class="m">d=2</span> ؛ صورت ۶ است ⇒ حالت سوم با ضریب <span class="m">6/2 = 3</span> .</li>
+        <li>تجزیه: <div class="inner">3(1/1 − 1/3) + 3(1/3 − 1/5) + 3(1/5 − 1/7)</div></li>
+        <li>ضریب ۳ را خارج کن، جمله‌های میانی حذف شوند: <div class="inner">3 × (1/1 − 1/7) = 3 × 6/7 = <b>18/7</b> ✓</div></li>
+        <li>چک سریع: <span class="m">6/3 + 6/15 + 6/35 = 2 + 2/5 + 6/35 = 90/35 = 18/7</span> ✓</li>
+      </ol>
+    </div></div>
+  </div>
+</section>
+<!-- ============ SECTION 5 ============ -->
+<section class="card" id="s5">
+  <div class="sec-head"><div class="sec-num">۵</div><h2>مقایسه سه حالت در یک نگاه</h2></div>
+  <p class="lead">این جدول را خوب حفظ کن؛ نقشه راه تو برای هر سوال تلسکوپی همین است!</p>
+  <div class="table-wrap">
+  <table class="cmp">
+    <thead>
+      <tr><th>ویژگی</th><th>🟢 حالت اول</th><th>🔵 حالت دوم</th><th>🟡 حالت سوم</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>صورت کسر</td>
+        <td>برابر اختلاف مخرج‌ها: <span class="ff">b−a</span></td>
+        <td>۱</td>
+        <td>عدد دلخواه <span class="ff">c</span> (نه ۱، نه اختلاف)</td>
+      </tr>
+      <tr>
+        <td>شکل مخرج</td>
+        <td><span class="ff">a×b</span></td>
+        <td><span class="ff">a(a+d)</span> با اختلاف ثابت d</td>
+        <td><span class="ff">a(a+d)</span> با اختلاف ثابت d</td>
+      </tr>
+      <tr>
+        <td>فرمول تجزیه</td>
+        <td><span class="ff">(b−a)/ab = 1/a − 1/b</span></td>
+        <td><span class="ff">1/[a(a+d)] = (1/d)(1/a − 1/(a+d))</span></td>
+        <td><span class="ff">c/[a(a+d)] = (c/d)(1/a − 1/(a+d))</span></td>
+      </tr>
+      <tr>
+        <td>ضریب لازم</td>
+        <td>بدون ضریب (ضریب = ۱)</td>
+        <td><span class="ff">1/d</span></td>
+        <td><span class="ff">c/d</span></td>
+      </tr>
+      <tr>
+        <td>روش حذف جمله‌های میانی</td>
+        <td>جمله‌های میانی دقیقاً برعکس هم‌اند و صفر می‌شوند</td>
+        <td>اول ضریب <span class="ff">1/d</span> از مجموع فاکتور می‌شود، بعد جمله‌های داخل پرانتز حذف می‌شوند</td>
+        <td>اول ضریب <span class="ff">c/d</span> از مجموع فاکتور می‌شود، بعد حذف</td>
+      </tr>
+      <tr>
+        <td>مثال کوتاه</td>
+        <td><span class="ff">3/(2×5) = 1/2 − 1/5</span></td>
+        <td><span class="ff">1/(2×5) = (1/3)(1/2 − 1/5)</span></td>
+        <td><span class="ff">5/(2×5) = (5/3)(1/2 − 1/5)</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-box"><div class="box-title">💡 راز جدول</div>
+  <p>به ستون ضریب دقت کن: حالت اول یعنی <span class="m">c = d</span> (ضریب ۱)، حالت دوم یعنی <span class="m">c = 1</span> (ضریب ۱/d) و حالت سوم یعنی <span class="m">c</span> دلخواه (ضریب c/d). پس در واقع فقط <strong>یک فرمول کلی</strong> داریم و سه حالت، سه وضعیت خاص آن هستند!</p></div>
+</section>
+
+<!-- ============ SECTION 6 ============ -->
+<section class="card" id="s6">
+  <div class="sec-head"><div class="sec-num">۶</div><h2>تشخیص سریع نوع سوال — نقشه ذهنی</h2></div>
+  <p class="lead">با دیدن هر کسر، این ۴ پرسش را از خودت بپرس؛ در کمتر از ۱۰ ثانیه راه‌حل پیدا می‌شود!</p>
+  <ol class="step-list">
+    <li><strong>صورت با اختلاف دو عدد مخرج برابر است؟</strong> اگر بله ⇒ <em class="e">حالت اول</em>؛ مستقیم بنویس <span class="m">1/a − 1/b</span> و تمام.</li>
+    <li><strong>اگر برابر نیست، اختلاف مخرج‌ها چند است؟</strong> عدد بزرگ‌تر منفی کوچک‌تر = d را حساب کن (مثلاً ۵−۲ = ۳).</li>
+    <li><strong>چه ضریبی لازم است؟</strong> صورت ÷ اختلاف. اگر صورت ۱ است ضریب <span class="m">1/d</span> (حالت دوم)؛ اگر صورت c است ضریب <span class="m">c/d</span> (حالت سوم).</li>
+    <li><strong>آیا کسرها قابلیت تلسکوپی شدن دارند؟</strong> عدد پایانی هر مخرج باید با عدد ابتدایی مخرجِ بعدی یکی باشد (مثل ۲×۵ و ۵×۸) تا جمله‌های میانی بتوانند حذف شوند!</li>
+  </ol>
+
+  <div class="tip-box"><div class="box-title">🤖 ابزار تعاملی تشخیص‌گر</div>
+  <p>عددهای یک کسر را وارد کن تا بگوییم کدام حالت است، ضریبش چند است و تجزیه‌اش چه شکلی می‌شود:</p>
+  <div class="helper">
+    <div class="helper-grid">
+      <div class="field"><label>صورت (c)</label><input type="number" id="hC" value="5" min="1"></div>
+      <div class="field"><label>عدد اول مخرج (a)</label><input type="number" id="hA" value="2" min="1"></div>
+      <div class="field"><label>عدد دوم مخرج (b)</label><input type="number" id="hB" value="5" min="2"></div>
+      <button class="btn" id="hGo">🔍 تشخیص بده</button>
+    </div>
+    <div class="helper-out" id="hOut"></div>
+  </div></div>
+
+  <h3 style="color:var(--em);margin:26px 0 4px">🎮 بازی سریع: کدام حالت است؟</h3>
+  <p>کسر زیر را ببین و سریع بگو کدام حالت است — ۵ سوال پشت سر هم!</p>
+  <div class="helper" id="mg">
+    <div class="mg-q" id="mgQ">…</div>
+    <div class="mg-btns">
+      <button class="btn btn-ghost" data-case="1">حالت اول</button>
+      <button class="btn btn-ghost" data-case="2">حالت دوم</button>
+      <button class="btn btn-ghost" data-case="3">حالت سوم</button>
+    </div>
+    <div class="feedback" id="mgFb"></div>
+    <div class="mg-dots" id="mgDots"></div>
+  </div>
+</section>
+<!-- ============ SECTION 7 ============ -->
+<section class="card" id="s7">
+  <div class="sec-head"><div class="sec-num">۷</div><h2>مثال ترکیبی: هر سه حالت در یک مجموع!</h2></div>
+  <p class="lead">وقت شه‌پارچه است — مجموعی که در حلش هر سه حالت را پشت سر هم تجربه می‌کنی.</p>
+  <p>به مخرج‌ها نگاه کن: همه از شکل <span class="m">a(a+d)</span> هستند با اختلاف ثابت <span class="m">d = 3</span> (زنجیره‌ی ۲ → ۵ → ۸ → ۱۱ → ۱۴ → ۱۷). ولی صورت‌ها متفاوت‌اند: دو کسر اول صورت ۱، دو کسر وسط صورت ۵ و کسر آخر صورت ۳ (= همان اختلاف!). پس:</p>
+
+  <div class="formula-box gold">
+    S =
+    <span class="frac"><span class="fn">۱</span><span class="fd">۲×۵</span></span> +
+    <span class="frac"><span class="fn">۱</span><span class="fd">۵×۸</span></span> +
+    <span class="frac"><span class="fn">۵</span><span class="fd">۸×۱۱</span></span> +
+    <span class="frac"><span class="fn">۵</span><span class="fd">۱۱×۱۴</span></span> +
+    <span class="frac"><span class="fn">۳</span><span class="fd">۱۴×۱۷</span></span>
+  </div>
+  <p><strong>دسته‌بندی:</strong> دو کسر اول <em class="e">حالت دوم</em> (صورت ۱، ضریب ۱/۳) • دو کسر وسط <em class="e">حالت سوم</em> (صورت ۵، ضریب ۵/۳) • کسر آخر <em class="e">حالت اول</em> (صورت ۳ = اختلاف، بدون ضریب).</p>
+
+  <ol class="step-list">
+    <li><strong>تجزیه‌ی هر پنج کسر با ضریب مناسب خودشان:</strong><div class="inner">S = (1/3)(1/2 − 1/5) + (1/3)(1/5 − 1/8) + (5/3)(1/8 − 1/11) + (5/3)(1/11 − 1/14) + (1/14 − 1/17)</div></li>
+    <li><strong>گروه‌بندی بر اساس ضریب‌های یکسان</strong> — فقط جمله‌هایی حذف می‌شوند که <em class="g">ضریب یکسان</em> دارند:<div class="inner">S = (1/3)[(1/2−1/5)+(1/5−1/8)] + (5/3)[(1/8−1/11)+(1/11−1/14)] + (1/14 − 1/17)</div></li>
+    <li><strong>حذف جمله‌های میانی داخل هر گروه:</strong> در گروه اول <span class="m">−1/5+1/5=0</span> و <span class="m">−1/8+1/8=0</span>؛ در گروه دوم <span class="m">−1/11+1/11=0</span> :<div class="inner">S = (1/3)(1/2 − 1/8) + (5/3)(1/8 − 1/14) + (1/14 − 1/17)</div></li>
+    <li><strong>هر گروه را جدا حساب کن:</strong><div class="inner">(1/3)(1/2 − 1/8) = (1/3)(4/8 − 1/8) = (1/3)(3/8) = <b>1/8</b></div><div class="inner">(5/3)(1/8 − 1/14) = (5/3)(7/56 − 4/56) = (5/3)(3/56) = <b>5/56</b></div><div class="inner">(1/14 − 1/17) = (17 − 14)/238 = <b>3/238</b></div></li>
+    <li><strong>جمع سه نتیجه با مخرج مشترک ۹۵۲:</strong><div class="inner">1/8 + 5/56 + 3/238 = 119/952 + 85/952 + 12/952 = 216/952</div></li>
+    <li><strong>ساده‌سازی نهایی:</strong><div class="inner">216/952 = 27/119 ≈ <b style="color:var(--gold)">0.227</b> (صورت و مخرج بر ۸ مشترک داشتند)</div></li>
+  </ol>
+
+  <div class="warn-box"><div class="box-title">🤯 چرا بعضی جمله‌ها حذف نشدند؟</div>
+  <p>جمله‌ی <span class="m">1/8</span> دو بار دیده می‌شود: یک‌بار با ضریب <span class="m">−1/3</span> و یک‌بار با ضریب <span class="m">+5/3</span>. چون ضرایب متفاوت‌اند، کاملاً خنثی نمی‌شوند (باقی‌مانده: <span class="m">(−1/3 + 5/3)(1/8) = (4/3)(1/8) = 1/6</span>). همین‌طور <span class="m">1/14</span> با ضرایب <span class="m">−5/3</span> و <span class="m">+1</span>. <strong>قانون طلایی:</strong> حذف کامل فقط وقتی رخ می‌دهد که هم مقدار جمله برابر باشد و هم ضریبش!</p></div>
+  <div class="tip-box"><div class="box-title">✅ کنترل صحت (چک نهایی)</div>
+  <p>جواب را با ماشین‌حساب چک کن: <span class="m">1/10 + 1/40 + 5/88 + 5/154 + 3/238 = 0.1 + 0.025 + 0.0568… + 0.0325… + 0.0126… ≈ 0.2269</span> و <span class="m">27/119 ≈ 0.2269</span> ✓ — عالی، جواب درست است.</p></div>
+
+  <div class="quiz" data-answer="b" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — مثال ترکیبی</span>
+    <div class="quiz-q">در حل یک مجموع ترکیبی، جمله‌ی <span class="m">1/8</span> یک‌بار با ضریب <span class="m">−1/3</span> و یک‌بار با ضریب <span class="m">+5/3</span> ظاهر می‌شود. چه اتفاقی می‌افتد؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">کاملاً حذف می‌شوند چون مقدارشان برابر است</button>
+      <button class="opt" data-v="b">کاملاً حذف نمی‌شوند چون ضریب‌ها متفاوت‌اند؛ باقی‌مانده +۴/۳ از ۱/۸ می‌ماند</button>
+      <button class="opt" data-v="c">هر دو برابر ۰ می‌شوند چون علامت‌ها مخالف است</button>
+      <button class="opt" data-v="d">مجموعشان برابر ۱/۸ می‌شود</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <p>حذف کامل دو جمله وقتی رخ می‌دهد که <strong>هم مقدار و هم ضریب</strong> یکسان باشد. اینجا ضرایب <span class="m">−1/3</span> و <span class="m">+5/3</span> متفاوت‌اند: <span class="m">(−1/3 + 5/3)(1/8) = (4/3)(1/8) = 4/24 = 1/6</span> که باقی می‌ماند. پس گزینه دوم درست است.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ SECTION 8 ============ -->
+<section class="card" id="s8">
+  <div class="sec-head"><div class="sec-num">۸</div><h2>تمرین‌های تو — از آسان به دشوار</h2></div>
+  <p class="lead">جواب‌ات را تایپ کن (مثلاً 4/5 یا ۴/۵) و دکمه‌ی بررسی را بزن. اگر گیر کردی، راه‌حل گام‌به‌گام منتظر توست!</p>
+
+  <!-- EX 1 -->
+  <div class="ex-card" data-answer="4/5" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">تمرین ۱ • حالت اول</span><span class="ex-star">⭐</span></div>
+    <div class="ex-q">1/(1×2) + 1/(2×3) + 1/(3×4) + 1/(4×5) = ؟</div>
+    <p style="font-size:.9rem;color:var(--mut)">راهنما: صورت هر کسر ۱ است و اختلاف مخرج‌ها هم… حساب کن!</p>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="مثلاً 3/4" autocomplete="off">
+      <button class="btn check">✅ بررسی جواب</button>
+      <button class="btn btn-ghost sol-toggle">💡 راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل تشریحی</div>
+      <ol class="step-list">
+        <li>اختلاف مخرج‌ها: <span class="m">2−1=1</span> و صورت ۱ است ⇒ هر چهار کسر حالت اول‌اند (بدون ضریب).</li>
+        <li>تجزیه: <div class="inner">(1−1/2) + (1/2−1/3) + (1/3−1/4) + (1/4−1/5)</div></li>
+        <li>حذف میانی‌ها ⇒ فقط دو سر می‌ماند: <div class="inner">1 − 1/5 = <b>4/5</b> ✓</div></li>
+      </ol>
+    </div></div>
+  </div>
+
+  <!-- EX 2 -->
+  <div class="ex-card" data-answer="4/9" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">تمرین ۲ • حالت دوم</span><span class="ex-star">⭐⭐</span></div>
+    <div class="ex-q">1/(1×3) + 1/(3×5) + 1/(5×7) + 1/(7×9) = ؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="جواب؟" autocomplete="off">
+      <button class="btn check">✅ بررسی جواب</button>
+      <button class="btn btn-ghost sol-toggle">💡 راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل تشریحی</div>
+      <ol class="step-list">
+        <li>اختلاف مخرج‌ها: <span class="m">3−1=2</span> ، <span class="m">5−3=2</span> ، <span class="m">7−5=2</span> ، <span class="m">9−7=2</span> ⇒ <span class="m">d=2</span> ؛ صورت ۱ ⇒ حالت دوم با ضریب <span class="m">1/2</span> .</li>
+        <li>تجزیه: <div class="inner">(1/2)(1/1 − 1/3) + (1/2)(1/3 − 1/5) + (1/2)(1/5 − 1/7) + (1/2)(1/7 − 1/9)</div></li>
+        <li>فاکتور ۱/۲ و حذف میانی‌ها: <div class="inner">(1/2)(1/1 − 1/9) = (1/2)(8/9) = <b>4/9</b> ✓</div></li>
+      </ol>
+    </div></div>
+  </div>
+
+  <!-- EX 3 -->
+  <div class="ex-card" data-answer="1/15" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">تمرین ۳ • حالت دوم</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q">1/(3×7) + 1/(7×11) + 1/(11×15) = ؟</div>
+    <p style="font-size:.9rem;color:var(--mut)">راهنما: این‌بار زنجیره از ۳ شروع می‌شود، نه از ۱!</p>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="جواب؟" autocomplete="off">
+      <button class="btn check">✅ بررسی جواب</button>
+      <button class="btn btn-ghost sol-toggle">💡 راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل تشریحی</div>
+      <ol class="step-list">
+        <li>اختلاف: <span class="m">7−3=4</span> ، <span class="m">11−7=4</span> ، <span class="m">15−11=4</span> ⇒ <span class="m">d=4</span> ؛ صورت ۱ ⇒ ضریب <span class="m">1/4</span> .</li>
+        <li>تجزیه و فاکتور: <div class="inner">(1/4)[(1/3−1/7)+(1/7−1/11)+(1/11−1/15)]</div></li>
+        <li>حذف میانی‌ها: <div class="inner">(1/4)(1/3 − 1/15) = (1/4)(5/15 − 1/15) = (1/4)(4/15) = <b>1/15</b> ✓</div></li>
+        <li>جالب است: جواب برابر ۱ بر آخرین مخرجِ تجزیه (۱۵) شد — اتفاق تصادفی این مثال!</li>
+      </ol>
+    </div></div>
+  </div>
+
+  <!-- EX 4 -->
+  <div class="ex-card" data-answer="5/9" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">تمرین ۴ • حالت سوم</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q">5/(3×5) + 5/(5×7) + 5/(7×9) = ؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="جواب؟" autocomplete="off">
+      <button class="btn check">✅ بررسی جواب</button>
+      <button class="btn btn-ghost sol-toggle">💡 راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل تشریحی</div>
+      <ol class="step-list">
+        <li>اختلاف: <span class="m">5−3=2</span> ، <span class="m">7−5=2</span> ، <span class="m">9−7=2</span> ⇒ <span class="m">d=2</span> ؛ صورت ۵ ⇒ چون <span class="m">5≠2</span> و <span class="m">5≠1</span> پس حالت سوم با ضریب <span class="m">5/2</span> .</li>
+        <li>تجزیه: <div class="inner">(5/2)(1/3 − 1/5) + (5/2)(1/5 − 1/7) + (5/2)(1/7 − 1/9)</div></li>
+        <li>فاکتور ۵/۲ و حذف: <div class="inner">(5/2)(1/3 − 1/9) = (5/2)(3/9 − 1/9) = (5/2)(2/9) = <b>5/9</b> ✓</div></li>
+        <li>چک سریع: <span class="m">5/15 + 5/35 + 5/63 = 1/3 + 1/7 + 5/63 = 21/63 + 9/63 + 5/63 = 35/63 = 5/9</span> ✓</li>
+      </ol>
+    </div></div>
+  </div>
+
+  <!-- EX 5 -->
+  <div class="ex-card" data-answer="8/9" data-solved="0">
+    <div class="ex-head"><span class="ex-badge hard">تمرین ۵ • حالت سوم — چالش نهایی</span><span class="ex-star">⭐⭐⭐⭐⭐</span></div>
+    <div class="ex-q">8/(2×6) + 8/(6×10) + 8/(10×14) + 8/(14×18) = ؟</div>
+    <p style="font-size:.9rem;color:var(--mut)">راهنما: چهار جمله! آرام باش، مرحله‌به‌مرحله پیش برو.</p>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="جواب؟" autocomplete="off">
+      <button class="btn check">✅ بررسی جواب</button>
+      <button class="btn btn-ghost sol-toggle">💡 راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل تشریحی</div>
+      <ol class="step-list">
+        <li>اختلاف مخرج‌ها: <span class="m">6−2=4</span> در همه ⇒ <span class="m">d=4</span> ؛ صورت ۸ ⇒ حالت سوم با ضریب <span class="m">8/4 = 2</span> .</li>
+        <li>تجزیه: <div class="inner">2(1/2 − 1/6) + 2(1/6 − 1/10) + 2(1/10 − 1/14) + 2(1/14 − 1/18)</div></li>
+        <li>فاکتور ۲ و حذف سه جفت میانی: <div class="inner">2 × (1/2 − 1/18) = 2 × (9/18 − 1/18) = 2 × 8/18 = 16/18</div></li>
+        <li>ساده‌سازی: <div class="inner">16/18 = <b>8/9</b> ✓</div></li>
+        <li>چک نهایی: <span class="m">8/12+8/60+8/140+8/252 = 2/3 + 2/15 + 2/35 + 2/63 = 280/315 = 8/9</span> ✓</li>
+      </ol>
+    </div></div>
+  </div>
+
+  <div class="note-box" style="margin-top:26px"><div class="box-title">🏆 کارنامه‌ی تمرین‌ها</div>
+  <p>تمرین‌های حل‌شده: <strong id="exScore">۰</strong> از ۵ — <span id="exMsg">هر تمرین را که درست جواب بدهی، اینجا روشن می‌شود!</span></p></div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="card" id="summary">
+  <div class="sec-head"><div class="sec-num">✦</div><h2>خلاصه‌ی کاربردی — مرور ۳۰ ثانیه‌ای</h2></div>
+  <p class="lead">هر وقت سوال تلسکوپی دیدی، این سه کارت را در ذهنت مرور کن:</p>
+  <div class="sum-grid">
+    <div class="sum-card">
+      <h4>۱️⃣ اختلاف را حساب کن</h4>
+      <div class="ff">d = b − a</div>
+      <p>عدد بزرگ مخرج منفی عدد کوچک. مخرج باید به شکل a(a+d) زنجیره‌ای باشد: پایانیِ هر مخرج = آغازنده‌ی بعدی.</p>
+    </div>
+    <div class="sum-card">
+      <h4>۲️⃣ صورت را با d مقایسه کن</h4>
+      <div class="ff">c = d ? c = 1 ? c ?</div>
+      <p>صورت = اختلاف ⇒ حالت اول، بدون ضریب. صورت = ۱ ⇒ حالت دوم، ضریب ۱/d. غیر این ⇒ حالت سوم، ضریب c/d.</p>
+    </div>
+    <div class="sum-card">
+      <h4>۳️⃣ تجزیه، فاکتور، حذف</h4>
+      <div class="ff">(c/d) × (1/a − 1/(a+d))</div>
+      <p>هر کسر را تجزیه کن، ضریب مشترک را خارج کن، جمله‌های میانی (فقط با ضریب یکسان!) حذف شوند و دو سر را جمع بزن.</p>
+    </div>
+  </div>
+  <div class="warn-box"><div class="box-title">⚠️ سه اشتباه رایج که نباید مرتکب شوی</div>
+  <p>۱) فراموش کردن ضریب <span class="m">1/d</span> یا <span class="m">c/d</span> در حالت‌های دوم و سوم — همیشه بپرس «صورت دقیقاً برابر اختلاف است؟»<br>
+  ۲) ضرب کردن کل عبارت در d بدون تقسیم جبرانی — مقدار عبارت را خراب می‌کند.<br>
+  ۳) حذف جمله‌هایی با مقدار برابر ولی ضریب متفاوت — حذف فقط برای ضرایب یکسان مجاز است.</p></div>
+</section>
+
+<!-- ================= فصل نهم: فرمول‌های سریع مجموع اعداد ================= -->
+<div class="ch9-divider" id="ch9">
+  <span class="sym" style="top:16%;right:5%">Σ</span>
+  <span class="sym" style="bottom:18%;left:6%">n²</span>
+  <span class="sym" style="top:34%;left:9%">2n−1</span>
+  <span class="sym" style="bottom:32%;right:10%">+1</span>
+  <span class="badge">🧮 فصل نهم — فصل جدید!</span>
+  <h2>فرمول‌های سریع مجموع اعداد<br>از اعداد طبیعی تا دنباله‌های با فاصلهٔ معین</h2>
+  <p>در این فصل پنج فرمول طلایی را قدم‌به‌قدم و بدون نیاز به معلم یاد می‌گیری: مجموع اعداد طبیعی متوالی، مجموع اعداد زوج، مجموع اعداد فرد و دنباله‌های با فاصلهٔ ثابت. هر مبحث مثال‌های حل‌شده دارد و بلافاصله کویز تعاملی می‌آید؛ در پایان هم آزمون ۱۲ سؤالی همین فصل و آزمون جامع ۵۰ سؤالی از کل کتاب منتظر توست!</p>
+  <div class="topic-cards">
+    <a class="topic-card" href="#n1"><b>۹.۱ · اعداد طبیعی متوالی</b><span>1+2+⋯+n = n(n+1)/2</span></a>
+    <a class="topic-card" href="#n2"><b>۹.۲ · اعداد زوج</b><span>2+4+⋯+2n = n(n+1)</span></a>
+    <a class="topic-card" href="#n3"><b>۹.۳ · اعداد فرد</b><span>1+3+⋯+(2n−1) = n²</span></a>
+    <a class="topic-card" href="#n4"><b>۹.۴ · فاصلهٔ معین</b><span>تعداد و مجموع</span></a>
+    <a class="topic-card" href="#n5"><b>۹.۵ · جدول طلایی</b><span>کدام فرمول برای کدام سؤال؟</span></a>
+    <a class="topic-card" href="#n6"><b>۹.۶ · آزمون فصل ۹</b><span>۱۲ سؤال تعاملی</span></a>
+    <a class="topic-card" href="#n7"><b>۹.۷ · اشتباهات رایج</b><span>۶ هشدار مهم</span></a>
+    <a class="topic-card" href="#exam"><b>🎓 آزمون جامع</b><span>۵۰ سؤال از هر دو فصل</span></a>
+  </div>
+</div>
+
+<!-- ============ 9.1 طبیعی ============ -->
+<section class="card" id="n1">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۱</div><h2>مجموع اعداد طبیعی متوالی</h2></div>
+  <p class="lead">معروف‌ترین فرمول ریاضی مدرسه — همان که گاوس در کودکی کشف کرد!</p>
+  <p>می‌خواهیم مجموع اعداد طبیعی از ۱ تا <strong>n</strong> را حساب کنیم؛ مثلاً <span class="m">1+2+3+…+100</span> . جمع‌کردن تک‌تک صد عدد کند و خسته‌کننده است و برای اعداد بزرگ‌تر عملاً غیرممکن. اما با یک فرمول، در چند ثانیه جواب آماده می‌شود:</p>
+  <div class="formula-box gold">
+    1 + 2 + 3 + ⋯ + n =
+    <span class="frac big" style="color:var(--gold)"><span class="fn">n × (n+1)</span><span class="fd">۲</span></span>
+  </div>
+  <p><strong>روش کار خیلی ساده است:</strong> در این فرمول، <em class="e">n همان آخرین عدد دنباله است</em>. برای محاسبهٔ مجموع اعداد طبیعی از ۱ تا n کافی است n را در عدد بعد از خودش ضرب کنی (یعنی <span class="m">n×(n+1)</span>) و حاصل را بر ۲ تقسیم کنی. همین دو حرکت، جواب را می‌دهد!</p>
+  <div class="tip-box"><div class="box-title">🧠 چرا این فرمول درست است؟ (روش جفت‌کردن گاوس)</div>
+    <p>اعداد را از دو سر، دوبهدو جفت کن: <span class="m">(1+n)</span> ، <span class="m">(2+(n−1))</span> ، <span class="m">(3+(n−2))</span> و… . نکتهٔ شگفت‌انگیز این است که جمع <strong>همهٔ جفت‌ها یکی است</strong> و برابر <span class="m">n+1</span> می‌شود! چند جفت داریم؟ دقیقاً <span class="m">n/2</span> جفت. پس:</p>
+    <div class="formula-box">مجموع = (n+1) × <span class="frac"><span class="fn">n</span><span class="fd">۲</span></span> = <span class="frac"><span class="fn">n(n+1)</span><span class="fd">۲</span></span> ✓</div>
+    <p>آزمایش کوچک: <span class="m">1+2+3+4</span> ⇐ جفت‌ها: <span class="m">(1+4)</span> و <span class="m">(2+3)</span> ⇐ دو جفتِ ۵تایی ⇐ <span class="m">2×5=10</span> و از فرمول: <span class="m">4×5/2 = 10</span> ✓ — دقیقاً یک جواب!</p>
+  </div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شدهٔ ۱: مجموع اعداد ۱ تا ۱۰۰</h3>
+  <div class="formula-box">1 + 2 + 3 + ⋯ + 100 = ؟</div>
+  <ol class="step-list">
+    <li><strong>آخرین عدد (n) را پیدا کن:</strong> چون مجموع از ۱ تا ۱۰۰ است، <span class="m">n = 100</span> .</li>
+    <li><strong>در فرمول جای‌گذاری کن:</strong><div class="inner">S = 100 × (100+1) / 2</div></li>
+    <li><strong>صورت را حساب کن:</strong><div class="inner">S = 100 × 101 / 2 = 10100 / 2</div></li>
+    <li><strong>بر ۲ تقسیم کن و جواب نهایی را بنویس:</strong><div class="inner">S = <b style="color:var(--gold)">5050</b> ✓</div></li>
+  </ol>
+  <h3 style="color:var(--em)">🎓 مثال ۲: مجموع اعداد ۱ تا ۶۰</h3>
+  <p>آخرین عدد <span class="m">n = 60</span> است، پس: <span class="m">S = 60 × 61 / 2 = 3660 / 2 = 1830</span> ✓</p>
+  <h3 style="color:var(--em)">🎓 مثال ۳: مجموع اعداد ۱ تا ۴۵</h3>
+  <p>آخرین عدد <span class="m">n = 45</span> است، پس: <span class="m">S = 45 × 46 / 2 = 2070 / 2 = 1035</span> ✓</p>
+  <div class="note-box"><div class="box-title">📌 الگوی همیشگی</div>
+  <p>در هر سه مثال فقط سه کار کردیم: پیدا کردن n، ضرب در عدد بعدی، تقسیم بر ۲. حالا نوبت توست — سه کویز زیر را با همین الگو حل کن. جواب را می‌توانی عددی یا به شکل کسر (مثل 3/4) وارد کنی؛ رقم فارسی و انگلیسی هر دو قبول است.</p></div>
+
+  <div class="qz-card" data-answer="3240" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۱ • مبحث ۹.۱</span><span class="ex-star">⭐</span></div>
+    <div class="ex-q">1 + 2 + 3 + ⋯ + 80 = ؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p>آخرین عدد <span class="m">n = 80</span> است؛ پس: <span class="m">S = 80 × 81 / 2 = 6480 / 2 = 3240</span> ✓</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="325" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۲ • مبحث ۹.۱</span><span class="ex-star">⭐⭐</span></div>
+    <div class="ex-q txt">مجموع اعداد طبیعی از ۱ تا ۲۵ چقدر است؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p>آخرین عدد <span class="m">n = 25</span> است؛ پس: <span class="m">S = 25 × 26 / 2 = 650 / 2 = 325</span> ✓</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="20100" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۳ • مبحث ۹.۱</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q txt">مجموع اعداد طبیعی از ۱ تا ۲۰۰ چقدر است؟ (عدد بزرگ است، ولی فرمول همان است!)</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">n = 200</span> ؛ پس: <span class="m">S = 200 × 201 / 2 = 40200 / 2 = 20100</span> ✓ — حواست به تقسیم پایانی بر ۲ باشد!</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 9.2 زوج ============ -->
+<section class="card" id="n2">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۲</div><h2>مجموع اعداد زوج طبیعی</h2></div>
+  <p class="lead">از فرمول قبل قوی‌تر می‌شویم: این‌بار فقط اعداد زوج!</p>
+  <p>هر عدد زوج دقیقاً ۲ برابر یک عدد طبیعی است: <span class="m">2,4,6,…,2n</span> یعنی <span class="m">2×1 , 2×2 , 2×3 , … , 2×n</span> . پس می‌توانی ۲ را فاکتور بگیری: مجموع زوج‌ها = <span class="m">2 × (1+2+⋯+n) = 2 × n(n+1)/2 = n(n+1)</span> . به این ترتیب فرمول زوج‌ها مستقیماً از فرمول اعداد طبیعی به دست می‌آید:</p>
+  <div class="formula-box gold">2 + 4 + 6 + ⋯ + 2n = n × (n+1)</div>
+  <p><strong>n در این فرمول، تعداد اعداد زوج است؛</strong> بنابراین آخرین عدد زوج برابر <span class="m">2n</span> خواهد بود. مثلاً اگر ۵۰ عدد زوج اول را جمع بزنی، آخرین عدد <span class="m">2×50=100</span> است.</p>
+  <div class="warn-box"><div class="box-title">⚠️ مهم‌ترین نکتهٔ این مبحث</div>
+  <p><span class="wrong">✗ اشتباه رایج:</span> گرفتن n برابرِ آخرین عدد! اگر آخرین عدد مجموع ۱۰۰ باشد، <span class="m">n = 50</span> است نه ۱۰۰، چون <span class="m">2n = 100</span> یعنی <span class="m">n = 100/2 = 50</span> .<br><span class="right">✓ درست:</span> همیشه اول بپرس «چند عدد زوج داریم؟» — همان n است. اگر به‌جای تعداد، آخرین عدد داده شده بود، تقسیمش کن بر ۲ تا n به دست آید.</p></div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شده: مجموع ۵۰ عدد زوج طبیعی اول (2+4+6+⋯+100)</h3>
+  <ol class="step-list">
+    <li><strong>تعداد اعداد زوج مشخص است:</strong> <span class="m">n = 50</span> (چون آخرین عدد ۱۰۰ است و <span class="m">2×50=100</span>).</li>
+    <li><strong>جای‌گذاری در فرمول:</strong><div class="inner">S = 50 × (50 + 1)</div></li>
+    <li><strong>محاسبهٔ نهایی:</strong><div class="inner">S = 50 × 51 = <b style="color:var(--gold)">2550</b> ✓</div></li>
+  </ol>
+  <p><strong>چرا n=۵۰ است، نه ۱۰۰؟</strong> چون فرمول با «تعداد» کار می‌کند، نه با «آخرین عدد». وقتی گفته می‌شود «تا ۱۰۰» یعنی <span class="m">2n = 100</span>؛ تقسیم بر ۲ می‌دهد <span class="m">n = 50</span> . در مجموع تا ۱۰۰ دقیقاً ۵۰ عدد زوج وجود دارد: ۲، ۴، ۶، …، ۱۰۰.</p>
+
+  <h3 style="color:var(--em)">🎓 مثال‌های بیشتر با روش حل کامل</h3>
+  <p><strong>مثال ۲:</strong> <span class="m">2+4+6+⋯+20</span> ⇐ آخرین عدد ۲۰ است ⇐ <span class="m">n = 20/2 = 10</span> ⇐ <span class="m">S = 10 × 11 = 110</span> ✓ (چک: <span class="m">2×(1+2+…+10) = 2×55 = 110</span> ✓)</p>
+  <p><strong>مثال ۳:</strong> مجموع ۳۰ عدد زوج طبیعی اول ⇐ <span class="m">n = 30</span> ⇐ <span class="m">S = 30 × 31 = 930</span> ✓</p>
+  <p><strong>مثال ۴:</strong> <span class="m">2+4+6+⋯+60</span> ⇐ <span class="m">n = 60/2 = 30</span> ⇐ <span class="m">S = 30 × 31 = 930</span> ✓ — دو مثال آخر جواب یکسانی دادند، چون «۳۰ عدد زوج اول» و «تا ۶۰» دقیقاً یک مجموع‌اند!</p>
+
+  <div class="quiz" data-answer="b" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — مفهوم n در فرمول زوج‌ها</span>
+    <div class="quiz-q">در مجموع <span class="m">2+4+6+⋯+100</span> برای استفاده از فرمول <span class="m">n(n+1)</span> ، مقدار n چند است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۱۰۰</button>
+      <button class="opt" data-v="b">۵۰</button>
+      <button class="opt" data-v="c">۹۹</button>
+      <button class="opt" data-v="d">۱۰۱</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <p>آخرین عدد ۱۰۰ است یعنی <span class="m">2n = 100</span> ⇒ <span class="m">n = 50</span> ✓ — تعداد اعداد زوج از ۲ تا ۱۰۰ دقیقاً ۵۰ عدد است. یادت باشد: n «تعداد» است، نه آخرین عدد!</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="240" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۱ • مبحث ۹.۲</span><span class="ex-star">⭐</span></div>
+    <div class="ex-q txt">مجموع ۱۵ عدد زوج طبیعی اول چقدر است؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">n = 15</span> ؛ پس: <span class="m">S = 15 × 16 = 240</span> ✓ (آخرین عدد: <span class="m">2×15 = 30</span>)</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="342" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۲ • مبحث ۹.۲</span><span class="ex-star">⭐⭐</span></div>
+    <div class="ex-q">2 + 4 + 6 + ⋯ + 36 = ؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p>آخرین عدد ۳۶ است ⇒ <span class="m">n = 36/2 = 18</span> ؛ پس: <span class="m">S = 18 × 19 = 342</span> ✓</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="1640" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۳ • مبحث ۹.۲</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q txt">مجموع ۴۰ عدد زوج طبیعی اول چقدر است؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">n = 40</span> ؛ پس: <span class="m">S = 40 × 41 = 1640</span> ✓ (آخرین عدد: <span class="m">2×40 = 80</span>)</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 9.3 فرد ============ -->
+<section class="card" id="n3">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۳</div><h2>مجموع اعداد فرد طبیعی</h2></div>
+  <p class="lead">جادویی‌ترین فرمول فصل: مجموع اعداد فرد، مربع می‌شود!</p>
+  <div class="warn-box"><div class="box-title">🚨 نکتهٔ بسیار مهم — اول این را بخوان</div>
+  <p>آخرین عدد فرد در مجموع n عدد فرد طبیعی اول، برابر <em class="g">2n−۱ است؛ نه 2n</em>! مثلاً در مجموع ۲۰ عدد فرد اول، آخرین عدد <span class="m">2×20−1 = 39</span> است، نه ۴۰. پس فرمول دقیق چنین است:</p></div>
+  <div class="formula-box gold">1 + 3 + 5 + ⋯ + (2n − 1) = n<sup>2</sup></div>
+  <p>یعنی <strong>مجموع n عدد فرد طبیعی اول، دقیقاً برابر مربع تعداد آن‌هاست.</strong> خودت چک کن: <span class="m">1 = 1²</span> ، <span class="m">1+3 = 4 = 2²</span> ، <span class="m">1+3+5 = 9 = 3²</span> ، <span class="m">1+3+5+7 = 16 = 4²</span> — زیباست، نه؟!</p>
+  <div class="tip-box"><div class="box-title">🧠 چرا n²؟ دو اثبات</div>
+    <p><strong>اثبات تصویری:</strong> نقاط را مثل مربع بچین. مربع ۲×۲ را با ۳ نقطهٔ جدیدِ «L شکل» به مربع ۳×۳ تبدیل می‌کنی: <span class="m">1+3 = 4</span> . دوباره ۵ نقطهٔ L شکل اضافه کن: <span class="m">4+5 = 9 = 3×3</span> . هر عدد فرد بعدی یک لایهٔ L به مربع اضافه می‌کند؛ پس جمع همهٔ آن‌ها همیشه یک مربع کامل است!</p>
+    <p><strong>اثبات جبری:</strong> مجموع اعداد ۱ تا 2n برابر <span class="m">2n(2n+1)/2 = n(2n+1)</span> و مجموع زوج‌ها تا 2n برابر <span class="m">n(n+1)</span> است. اعداد فرد = همه به‌علاوهٔ زوج‌ها را بردار:</p>
+    <div class="formula-box">n(2n+1) − n(n+1) = 2n² + n − n² − n = n<sup>2</sup> ✓</div>
+  </div>
+
+  <h3 style="color:var(--em);margin:22px 0 4px">🎓 مثال حل‌شدهٔ ۱: مجموع ۲۰ عدد فرد طبیعی اول</h3>
+  <ol class="step-list">
+    <li><strong>تعداد اعداد داده شده است:</strong> <span class="m">n = 20</span> .</li>
+    <li><strong>آخرین عدد را هم چک کن:</strong> <span class="m">2×20−1 = 39</span> ؛ یعنی مجموع ما <span class="m">1+3+⋯+39</span> است.</li>
+    <li><strong>از فرمول:</strong><div class="inner">S = 20² = <b style="color:var(--gold)">400</b> ✓</div></li>
+  </ol>
+  <h3 style="color:var(--em)">🎓 مثال ۲ — وقتی به‌جای تعداد، آخرین عدد داده شده: 1+3+5+⋯+57</h3>
+  <ol class="step-list">
+    <li><strong>اول تعداد را پیدا کن:</strong> <span class="m">n = (57+1)/2 = 58/2 = 29</span> .</li>
+    <li><strong>حالا از فرمول:</strong><div class="inner">S = 29² = <b style="color:var(--gold)">841</b> ✓</div></li>
+  </ol>
+  <p>دقت کن: نمی‌توانی ۵۷ را مستقیم در فرمول بگذاری؛ فرمول با «تعداد» کار می‌کند. پس همیشه اول n را از آخرین عدد دربیاور: <span class="m">n = (آخرین عدد + 1) ÷ 2</span> .</p>
+
+  <div class="quiz" data-answer="b" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — آخرین عدد فرد</span>
+    <div class="quiz-q">آخرین عدد در مجموع ۳۰ عدد فرد طبیعی اول کدام است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۶۰</button>
+      <button class="opt" data-v="b">۵۹</button>
+      <button class="opt" data-v="c">۶۱</button>
+      <button class="opt" data-v="d">۳۰</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <p>آخرین عدد فرد = <span class="m">2n − 1 = 2×30 − 1 = 59</span> ✓ — اگر گزینهٔ ۶۰ را انتخاب کردی، دوباره هشدار ابتدای مبحث را بخوان!</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="144" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۱ • مبحث ۹.۳</span><span class="ex-star">⭐</span></div>
+    <div class="ex-q txt">مجموع ۱۲ عدد فرد طبیعی اول چقدر است؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">n = 12</span> ؛ پس: <span class="m">S = 12² = 144</span> ✓ (آخرین عدد: <span class="m">2×12−1 = 23</span>)</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="529" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۲ • مبحث ۹.۳</span><span class="ex-star">⭐⭐</span></div>
+    <div class="ex-q">1 + 3 + 5 + ⋯ + 45 = ؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p>اول تعداد: <span class="m">n = (45+1)/2 = 23</span> ؛ بعد: <span class="m">S = 23² = 529</span> ✓</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="1225" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۳ • مبحث ۹.۳</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q txt">مجموع ۳۵ عدد فرد طبیعی اول چقدر است؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">n = 35</span> ؛ پس: <span class="m">S = 35² = 1225</span> ✓ (آخرین عدد: <span class="m">2×35−1 = 69</span>)</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 9.4 فاصله معین ============ -->
+<section class="card" id="n4">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۴</div><h2>دنباله‌های با فاصلهٔ معین — تعداد و مجموع</h2></div>
+  <p class="lead">وقتی اعداد با پرش ثابت جلو می‌روند، این دو فرمول حرف اول را می‌زنند.</p>
+  <p>در <strong>دنباله‌های حسابی</strong>، اختلاف هر دو جملهٔ متوالی ثابت است. این اختلاف ثابت را «فاصله» یا «قدر اختلاف مشترک» می‌نامیم. برای نمونه، در دنبالهٔ زیر فاصلهٔ اعداد ۴ است:</p>
+  <div class="formula-box">3 , 7 , 11 , 15 , 19<span class="eq" style="direction:rtl">← هر بار ۴ تا جلو!</span></div>
+
+  <h3 style="color:var(--em);margin:20px 0 4px">🅰️ الف) پیدا کردن تعداد اعداد</h3>
+  <p>چهار چیز را بشناس: «عدد کوچک» جملهٔ اول دنباله است (a)، «عدد بزرگ» آخرین جملهٔ دنباله است (b)، «فاصله» اختلاف ثابت بین دو جملهٔ متوالی است (d) و عدد ۱ را هم در پایان اضافه می‌کنیم، چون هر دو سر دنباله نیز در شمارش قرار دارند:</p>
+  <div class="formula-box gold">
+    <span class="eq" style="direction:rtl">تعداد = (عدد بزرگ − عدد کوچک) ÷ فاصله + ۱</span><br>
+    N = (b − a) ÷ d + 1
+  </div>
+  <div class="tip-box"><div class="box-title">🤔 چرا + ۱؟</div>
+  <p>فاصله‌ها همیشه یکی کمتر از خودِ اعدادند! از ۳ تا ۷ فقط «یک فاصله» هست ولی «دو عدد». در دنبالهٔ ۳،۷،۱۱،…،۹۹ دقیقاً ۲۴ پرشِ ۴تایی وجود دارد، اما ۲۵ عدد. مثل ۱۰ تیر چراغ‌برق که ۹ فاصله بین آن‌هاست. پس بعد از تقسیم، یادت نرود ۱ اضافه کنی!</p></div>
+
+  <h3 style="color:var(--em)">🎓 مثال حل‌شده: تعداد اعداد دنبالهٔ 3, 7, 11, 15, …, 99</h3>
+  <ol class="step-list">
+    <li><strong>شناسایی اجزا:</strong> عدد کوچک <span class="m">a = 3</span> ، عدد بزرگ <span class="m">b = 99</span> ، فاصله <span class="m">d = 4</span> .</li>
+    <li><strong>جای‌گذاری در فرمول:</strong><div class="inner">N = (99 − 3) ÷ 4 + 1</div></li>
+    <li><strong>تفریق و تقسیم:</strong><div class="inner">N = 96 ÷ 4 + 1 = 24 + 1</div></li>
+    <li><strong>نتیجه:</strong><div class="inner">N = <b style="color:var(--gold)">25</b> ⇒ دنباله ۲۵ جمله دارد ✓</div></li>
+  </ol>
+
+  <h3 style="color:var(--em)">🅱️ ب) پیدا کردن مجموع اعداد</h3>
+  <p>برای مجموع، اول «میانگین عدد کوچک و عدد بزرگ» را حساب می‌کنیم و بعد آن را در تعداد جمله‌ها ضرب می‌کنیم:</p>
+  <div class="formula-box gold">
+    <span class="eq" style="direction:rtl">مجموع = (عدد کوچک + عدد بزرگ) ÷ ۲ × تعداد</span><br>
+    S = (a + b) ÷ 2 × N
+  </div>
+  <h3 style="color:var(--em)">🎓 مثال حل‌شده: مجموع 3 + 7 + 11 + 15 + ⋯ + 99</h3>
+  <ol class="step-list">
+    <li><strong>مرحلهٔ اول — تعداد را محاسبه کن</strong> (با فرمول الف):<div class="inner">N = (99 − 3) ÷ 4 + 1 = 25</div></li>
+    <li><strong>مرحلهٔ دوم — میانگین دو سر:</strong><div class="inner">(3 + 99) ÷ 2 = 102 ÷ 2 = 51</div></li>
+    <li><strong>مرحلهٔ سوم — ضرب در تعداد:</strong><div class="inner">S = 51 × 25</div></li>
+    <li><strong>جواب نهایی:</strong><div class="inner">S = 51 × 25 = (50×25) + 25 = 1250 + 25 = <b style="color:var(--gold)">1275</b> ✓</div></li>
+  </ol>
+  <h3 style="color:var(--em)">🎓 مثال‌های بیشتر</h3>
+  <p><strong>مثال ۲</strong> — <span class="m">5, 10, 15, …, 50</span> : تعداد: <span class="m">N = (50−5)/5 + 1 = 10</span> ؛ مجموع: <span class="m">S = (5+50)/2 × 10 = 27.5 × 10 = 275</span> ✓</p>
+  <p><strong>مثال ۳</strong> — <span class="m">4, 9, 14, …, 94</span> : تعداد: <span class="m">N = (94−4)/5 + 1 = 19</span> ؛ مجموع: <span class="m">S = (4+94)/2 × 19 = 49 × 19 = 931</span> ✓</p>
+
+  <div class="qz-card" data-answer="24" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۱ • مبحث ۹.۴</span><span class="ex-star">⭐</span></div>
+    <div class="ex-q txt">دنبالهٔ ۷، ۱۱، ۱۵، …، ۹۹ (فاصله ۴) چند جمله دارد؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">N = (99−7)/4 + 1 = 92/4 + 1 = 23 + 1 = 24</span> ✓ — یادت نرود +۱ را اضافه کنی!</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="1250" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۲ • مبحث ۹.۴</span><span class="ex-star">⭐⭐⭐</span></div>
+    <div class="ex-q">2 + 6 + 10 + ⋯ + 98 = ؟ <span style="direction:rtl;font-size:.75em;color:var(--mut)">(فاصله ۴)</span></div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل — دو مرحله</div>
+      <p>۱) تعداد: <span class="m">N = (98−2)/4 + 1 = 24 + 1 = 25</span></p>
+      <p>۲) مجموع: <span class="m">S = (2+98)/2 × 25 = 50 × 25 = 1250</span> ✓</p>
+    </div></div>
+  </div>
+
+  <div class="qz-card" data-answer="24" data-solved="0">
+    <div class="ex-head"><span class="ex-badge">کویز ۳ • مبحث ۹.۴</span><span class="ex-star">⭐⭐</span></div>
+    <div class="ex-q txt">دنبالهٔ ۱۰، ۱۵، ۲۰، …، ۱۲۵ (فاصله ۵) چند جمله دارد؟</div>
+    <div class="answer-row">
+      <input type="text" class="ans" placeholder="پاسخ؟" autocomplete="off">
+      <button class="btn check">✅ بررسی پاسخ</button>
+      <button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">📝 روش حل</div>
+      <p><span class="m">N = (125−10)/5 + 1 = 115/5 + 1 = 23 + 1 = 24</span> ✓</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 9.5 جدول طلایی ============ -->
+<section class="card" id="n5">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۵</div><h2>جدول طلایی — کدام فرمول برای کدام سؤال؟</h2></div>
+  <p class="lead">این جدول را یک بار با دقت بخوان؛ در آزمون‌ها همه‌چیز به تشخیص درستِ فرمول است!</p>
+  <div class="table-wrap">
+  <table class="cmp">
+    <thead><tr><th>وضعیت مجموع</th><th>فرمول</th><th>چه وقت استفاده کنیم</th></tr></thead>
+    <tbody>
+      <tr><td>۱) مجموع اعداد طبیعی متوالی</td><td><span class="ff">n(n+1) / 2</span></td><td>جمع از ۱ شروع می‌شود و فاصله ۱ است (۱ تا n)</td></tr>
+      <tr><td>۲) مجموع n عدد زوج طبیعی اول</td><td><span class="ff">n(n+1)</span></td><td>از ۲ شروع می‌شود و فاصله ۲ است؛ n یعنی «تعداد» و آخرین عدد 2n است</td></tr>
+      <tr><td>۳) مجموع n عدد فرد طبیعی اول</td><td><span class="ff">n²</span></td><td>از ۱ شروع می‌شود و فاصله ۲ است؛ n یعنی «تعداد» و آخرین عدد 2n−1 است</td></tr>
+      <tr><td>۴) تعداد اعداد با فاصلهٔ معین</td><td><span class="ff">(b − a) / d + 1</span></td><td>a جملهٔ اول، b جملهٔ آخر و d فاصلهٔ ثابت است</td></tr>
+      <tr><td>۵) مجموع اعداد با فاصلهٔ معین</td><td><span class="ff">(a + b) / 2 × N</span></td><td>اول N را از ردیف ۴ پیدا کن، بعد میانگین دو سر را در آن ضرب کن</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-box"><div class="box-title">🔤 راهنمای علائم</div>
+  <p>در فرمول‌های دو ردیف آخر: <span class="m">a</span> جملهٔ اول، <span class="m">b</span> جملهٔ آخر، <span class="m">d</span> فاصلهٔ ثابت، <span class="m">N</span> تعداد جمله‌ها و <span class="m">S</span> مجموع جمله‌هاست. در سه ردیف اول، n همان تعداد جمله‌هاست.</p></div>
+  <div class="tip-box"><div class="box-title">⚡ تشخیص در ۵ ثانیه</div>
+  <p>به «شروع» و «فاصله» نگاه کن: از ۱ با فاصلهٔ ۱ ⇒ ردیف ۱؛ از ۲ با فاصلهٔ ۲ ⇒ ردیف ۲؛ از ۱ با فاصلهٔ ۲ ⇒ ردیف ۳؛ شروع و فاصلهٔ دلخواه دیگر ⇒ ردیف‌های ۴ و ۵.</p></div>
+
+  <div class="quiz" data-answer="a" data-scored="0">
+    <span class="quiz-tag">🧩 آزمون تعاملی — تشخیص فرمول</span>
+    <div class="quiz-q">برای محاسبهٔ <span class="m">7 + 14 + 21 + ⋯ + 98</span> کدام مسیر درست است؟</div>
+    <div class="opts">
+      <button class="opt txt" data-v="a">اول تعداد: (98−7)÷7+1 = 14 ؛ بعد مجموع: (7+98)÷2×14 = 735</button>
+      <button class="opt txt" data-v="b">فرمول زوج‌ها: n(n+1) با n = 14</button>
+      <button class="opt txt" data-v="c">فرمول فردها: n² با n = 14</button>
+      <button class="opt txt" data-v="d">تعداد = (98−7)÷7 = 13 (بدون +۱) و بعد مجموع = (7+98)÷2×13</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">💡 نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in">
+      <div class="sol-title">📝 راه‌حل</div>
+      <p>این مجموع از ۷ شروع می‌شود و فاصله‌اش ۷ است؛ نه از ۲ (زوج‌ها) و نه از ۱ (فردها)! پس باید از فرمول‌های «فاصلهٔ معین» استفاده کنی. حواست هم باشد <strong>+۱</strong> فرمول تعداد را جا نیندازی — گزینهٔ د دقیقاً همان اشتباه رایج است: <span class="m">N = (98−7)/7 + 1 = 14</span> و <span class="m">S = (7+98)/2 × 14 = 52.5 × 14 = 735</span> ✓</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 9.6 آزمون فصل ۹ ============ -->
+<section class="card" id="n6">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۶</div><h2>آزمون تعاملی فصل ۹ — ۱۲ سؤال از آسان به دشوار</h2></div>
+  <p class="lead">همهٔ ۵ فرمول این فصل در این آزمون پوشش داده شده‌اند. جواب بده، فوری نتیجه را ببین، راه‌حل را یاد بگیر و در پایان درصدت را ببین!</p>
+  <div class="mini-chips"><span>۱۲ سؤال</span><span>پوشش ۵ فرمول</span><span>نمایش فوری درست/نادرست</span><span>راه‌حل گام‌به‌گام</span><span>امتیاز و درصد</span><span>شروع مجدد</span></div>
+  <div class="exam-wrap" id="t9box">
+    <div id="t9Start" class="center">
+      <p>آماده‌ای؟ سؤال‌ها از آسان شروع می‌شوند و کم‌کم سخت‌تر می‌شوند. اگر اشتباه کردی اشکالی ندارد — روش حل را نشانت می‌دهیم.</p>
+      <button class="btn" id="t9Go" style="margin-top:10px">🚀 شروع آزمون فصل ۹</button>
+    </div>
+    <div id="t9Play" class="hidden">
+      <div class="exam-top">
+        <div class="exam-chips"><span class="tchip" id="t9Count">سؤال ۱ از ۱۲</span><span class="tchip gold" id="t9Sc">امتیاز: ۰</span></div>
+      </div>
+      <div class="eprogress"><i id="t9Bar"></i></div>
+      <div class="exq" id="t9Q">…</div>
+      <div class="answer-row">
+        <input type="text" class="ans" id="t9Ans" placeholder="پاسخ عددی یا کسر مثل 3/4" autocomplete="off">
+        <button class="btn" id="t9Check">✅ بررسی پاسخ</button>
+        <button class="btn btn-ghost hidden" id="t9SolBtn">💡 نمایش راه‌حل</button>
+        <button class="btn btn-gold hidden" id="t9Next">سؤال بعدی ←</button>
+      </div>
+      <div class="feedback" id="t9Fb"></div>
+      <div class="sol-box" id="t9SolBox"><div class="sol-in"><div class="sol-title">📝 روش حل</div><div id="t9SolTxt"></div></div></div>
+    </div>
+    <div id="t9Final" class="hidden">
+      <div class="ringbox">
+        <svg width="170" height="170" viewBox="0 0 120 120">
+          <defs><linearGradient id="ringGradT9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#2dd4bf"/></linearGradient></defs>
+          <circle class="bgc" cx="60" cy="60" r="52"/>
+          <circle class="fgc" id="t9Ring" cx="60" cy="60" r="52" stroke="url(#ringGradT9)" stroke-dasharray="327" stroke-dashoffset="327"/>
+        </svg>
+        <div class="ring-num"><b id="t9Pct">۰٪</b><span>درصد موفقیت</span></div>
+      </div>
+      <div class="final-msg" id="t9Msg"></div>
+      <div class="final-detail" id="t9Detail"></div>
+      <div class="review-list" id="t9Rev"></div>
+      <div class="center" style="margin-top:14px"><button class="btn" id="t9Again">🔁 شروع مجدد آزمون فصل ۹</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9.7 اشتباهات رایج ============ -->
+<section class="card" id="n7">
+  <div class="sec-head"><div class="sec-num" style="font-size:1rem">۹.۷</div><h2>نکات و اشتباهات رایج — این‌ها را مرور کن!</h2></div>
+  <p class="lead">شش اشتباهی که بیشتر دانش‌آموزها مرتکب می‌شوند — با مثال عددی برای هرکدام.</p>
+
+  <div class="warn-box"><div class="box-title">۱) اشتباه گرفتن تعداد اعداد زوج با آخرین عدد زوج</div>
+  <p>در <span class="m">2+4+…+40</span> : <span class="wrong">✗ غلط:</span> <span class="m">n = 40</span> گرفتن و نوشتن <span class="m">40×41 = 1640</span> .<br><span class="right">✓ درست:</span> <span class="m">2n = 40 ⇒ n = 20</span> ؛ پس <span class="m">S = 20×21 = 420</span> ✓</p></div>
+
+  <div class="warn-box"><div class="box-title">۲) استفاده از 2n به‌جای 2n−1 برای آخرین عدد فرد</div>
+  <p>در مجموع ۲۰ عدد فرد طبیعی اول: <span class="wrong">✗ غلط:</span> انتظار داشتن عدد ۴۰ به‌عنوان جملهٔ آخر.<br><span class="right">✓ درست:</span> جملهٔ آخر <span class="m">2n−1 = 2×20−1 = 39</span> است؛ یعنی <span class="m">1+3+⋯+39 = 20² = 400</span> ✓</p></div>
+
+  <div class="warn-box"><div class="box-title">۳) فراموش کردن عدد ۱ در فرمول تعداد اعداد با فاصلهٔ ثابت</div>
+  <p>در دنبالهٔ <span class="m">3, 7, 11, …, 99</span> : <span class="wrong">✗ غلط:</span> <span class="m">N = (99−3)/4 = 24</span> .<br><span class="right">✓ درست:</span> <span class="m">N = 24 + 1 = 25</span> — فاصله‌ها یکی کمتر از اعدادند؛ دو سر دنباله هم شمرده می‌شوند!</p></div>
+
+  <div class="warn-box"><div class="box-title">۴) اشتباه گرفتن فاصلهٔ دنباله با تعداد جمله‌ها</div>
+  <p>در دنبالهٔ <span class="m">3, 7, 11, …, 99</span> : فاصله ۴ است ولی تعداد ۲۵ است — دو چیز کاملاً متفاوت! <span class="right">✓ قاعده:</span> فاصله را از تفریق دو جملهٔ متوالی بگیر (<span class="m">7−3=4</span>) و تعداد را از فرمول <span class="m">(b−a)/d + 1</span> .</p></div>
+
+  <div class="warn-box"><div class="box-title">۵) محاسبهٔ مجموع بدون پیدا کردن تعداد جمله‌ها</div>
+  <p>در <span class="m">7+14+…+98</span> : <span class="wrong">✗ غلط:</span> نوشتن مستقیم <span class="m">(7+98)/2 = 52.5</span> و تمام‌کردن سؤال! میانگین به‌تنهایی مجموع نیست.<br><span class="right">✓ درست:</span> اول <span class="m">N = (98−7)/7 + 1 = 14</span> ، بعد <span class="m">S = 52.5 × 14 = 735</span> — میانگین باید در تعداد ضرب شود!</p></div>
+
+  <div class="warn-box"><div class="box-title">۶) کاربرد فرمول تعداد وقتی دو سر داده‌شده اصلاً از یک دنباله نیستند</div>
+  <p>در دنبالهٔ <span class="m">3, 7, 11, …</span> اگر گفته شود «تا ۱۰۰»: <span class="wrong">✗ غلط:</span> <span class="m">N = (100−3)/4 = 24.25</span> — عدد اعشاری برای تعداد بی‌معنی است!<br><span class="right">✓ درست:</span> اول بخش‌پذیری را چک کن: <span class="m">100 − 3 = 97</span> بر ۴ بخش‌پذیر نیست، پس ۱۰۰ اصلاً جزو این دنباله نیست. بزرگ‌ترین جملهٔ واقعیِ کمتر از ۱۰۰، همان ۹۹ است و <span class="m">N = 25</span> ✓ — هر وقت خارج‌قسمت صحیح نشد، یعنی دو سرِ داده‌شده نمی‌توانند اولین و آخرین جملهٔ یک دنباله باشند.</p></div>
+
+  <div class="note-box" style="margin-top:26px"><div class="box-title">🏆 کارنامهٔ کویزهای فصل ۹</div>
+  <p>کویزهای درست: <strong id="qz9Score">۰</strong> از <strong id="qz9Max">۱۲</strong> — <span id="qz9Msg">هر کویز را که درست جواب بدهی، اینجا روشن می‌شود!</span></p></div>
+</section>
+
+<!-- ================= فصل کسرهای مصری ================= -->
+<div class="egy-divider" id="egy">
+  <div class="egy-hero-grid">
+    <div>
+      <span class="badge">فصل جدید · آموزش گام‌به‌گام</span>
+      <h2>کسرهای مصری<br>هر کسر، مجموعی از واحدها</h2>
+      <p>در این فصل یاد می‌گیری کسر واحد را بشناسی، یک کسر را به مجموع چند کسر واحد تجزیه کنی و برای هر سؤال، روش مناسب را انتخاب کنی. هر فرمول با اثبات، مثال و آزمایشگاه تعاملی همراه است.</p>
+    </div>
+    <div class="egy-symbol" aria-hidden="true">
+      <span class="frac big"><span class="fn">۱</span><span class="fd">n</span></span><span>=</span>
+      <span class="frac big"><span class="fn">۱</span><span class="fd">n+1</span></span><span>+</span>
+      <span class="frac big"><span class="fn">۱</span><span class="fd">n(n+1)</span></span>
+    </div>
+  </div>
+  <nav class="egy-map" aria-label="فهرست فصل کسرهای مصری">
+    <a href="#e1"><b>۱</b><span>کسر واحد و نمایش تصویری</span></a>
+    <a href="#e2"><b>۲</b><span>معنای کسر مصری</span></a>
+    <a href="#e3"><b>۳</b><span>تجزیه کسر واحد</span></a>
+    <a href="#e4"><b>۴</b><span>تجزیه ۲ بر عدد فرد</span></a>
+    <a href="#e5"><b>۵</b><span>قاعده شمارنده‌های مخرج</span></a>
+    <a href="#e6"><b>۶</b><span>تمرین و جمع‌بندی</span></a>
+  </nav>
+</div>
+
+<!-- ============ ۱. کسر واحد ============ -->
+<section class="card" id="e1">
+  <div class="sec-head"><div class="sec-num">۱</div><h2>کسر واحد: یک سهم از چند سهم برابر</h2></div>
+  <p class="lead">سنگ‌بنای کسرهای مصری، کسر واحد است؛ پس اول مطمئن شویم معنایش را کاملاً می‌دانیم.</p>
+  <div class="learning-targets"><span>تشخیص صورت ۱</span><span>مخرج طبیعی</span><span>نمایش با نوار کسری</span></div>
+  <div class="key-point">
+    <h4>تعریف</h4>
+    <p>به کسرهایی که <strong>صورت آن‌ها یک</strong> و <strong>مخرج آن‌ها عددی طبیعی</strong> باشد، کسر واحد می‌گوییم. مخرج مشخص می‌کند یک کل به چند قسمت مساوی تقسیم شده و صورت می‌گوید فقط یک قسمت را برمی‌داریم.</p>
+  </div>
+  <div class="egy-equation" aria-label="نمونه‌های کسر واحد">
+    <span class="frac big"><span class="fn">۱</span><span class="fd">۲</span></span> ،
+    <span class="frac big"><span class="fn">۱</span><span class="fd">۵</span></span> ،
+    <span class="frac big"><span class="fn">۱</span><span class="fd">۱۱</span></span> ، …
+  </div>
+  <div class="note-box"><div class="box-title">تشخیص سریع</div>
+    <p><span class="right">کسر واحد است:</span> ۱/۷، چون صورت ۱ و مخرج ۷ است. &nbsp; <span class="wrong">کسر واحد نیست:</span> ۳/۷، چون صورتش ۳ است؛ یا ۱/۰، چون مخرج صفر مجاز نیست و صفر عدد طبیعی برای مخرج کسر محسوب نمی‌شود.</p>
+  </div>
+
+  <h3 style="color:var(--em);margin:26px 0 8px">آزمایشگاه تصویری کسر واحد</h3>
+  <p>مخرج را تغییر بده. نوار همیشه یک کل است؛ بخش طلایی همان کسر واحد و بخش‌های کم‌رنگ، باقی کل‌اند.</p>
+  <div class="visual-def">
+    <div class="fraction-stage">
+      <div class="big-fraction" id="unitFraction" aria-live="polite"><span class="frac big"><span class="fn">۱</span><span class="fd">۵</span></span></div>
+      <div class="unit-strip" id="unitStrip" role="img" aria-label="یک کل به پنج قسمت مساوی تقسیم شده و یک قسمت انتخاب شده است"></div>
+      <div class="mini-label" id="unitCaption">یک سهم از ۵ سهم مساوی</div>
+    </div>
+    <div>
+      <p><strong>چه چیزی تغییر می‌کند؟</strong> وقتی مخرج بزرگ‌تر می‌شود، تعداد قسمت‌ها بیشتر و هر قسمت کوچک‌تر می‌شود. پس با صورت ثابت ۱، مخرج بزرگ‌تر یعنی کسر کوچک‌تر.</p>
+      <div class="lab-controls">
+        <label for="unitRange" class="mini-label">مخرج کسر</label>
+        <input id="unitRange" type="range" min="2" max="12" value="5" step="1" aria-describedby="unitCaption">
+        <output class="lab-value" id="unitValue" for="unitRange">۵ قسمت</output>
+      </div>
+      <div class="tip-box"><div class="box-title">یک آزمایش ذهنی</div><p>۱/۲ و ۱/۱۲ را مقایسه کن. در ۱/۲ کل فقط دو تکه است ولی در ۱/۱۲ دوازده تکه؛ پس یک تکه در حالت دوم بسیار کوچک‌تر است: <span class="m">1/12 &lt; 1/2</span>.</p></div>
+    </div>
+  </div>
+
+  <div class="quiz" data-answer="c" data-scored="0">
+    <span class="quiz-tag">بررسی یادگیری · کسر واحد</span>
+    <div class="quiz-q">کدام گزینه حتماً یک کسر واحد است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۲/۹</button>
+      <button class="opt" data-v="b">۳/۱</button>
+      <button class="opt" data-v="c">۱/۱۱</button>
+      <button class="opt" data-v="d">۱/۰</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">نمایش توضیح</button></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">چرا؟</div><p>در کسر واحد باید صورت دقیقاً ۱ باشد و مخرج یک عدد طبیعی غیرصفر. فقط ۱/۱۱ هر دو شرط را دارد.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ ۲. کسر مصری ============ -->
+<section class="card" id="e2">
+  <div class="sec-head"><div class="sec-num">۲</div><h2>کسر مصری: نوشتن یک کسر با کسرهای واحد</h2></div>
+  <p class="lead">به‌جای اینکه چند سهم را یک‌جا ببینیم، آن را به سهم‌های واحد می‌شکنیم.</p>
+  <div class="key-point"><h4>تعریف</h4><p>اگر کسری را بتوان به صورت <strong>مجموع دو یا چند کسر واحد</strong> نوشت، به آن کسر مصری می‌گوییم. در این فصل، تجزیه‌هایی می‌سازیم که مخرج کسرهای واحد آن‌ها متفاوت باشد.</p></div>
+  <div class="egy-equation">
+    <span class="frac big" style="color:var(--gold)"><span class="fn">۳</span><span class="fd">۴</span></span> =
+    <span class="frac big"><span class="fn">۱</span><span class="fd">۲</span></span> +
+    <span class="frac big"><span class="fn">۱</span><span class="fd">۴</span></span>
+  </div>
+  <p>یعنی سه سهم از چهار سهم را می‌توان به دو بخش تبدیل کرد: <strong>دو سهم از چهار سهم</strong> که همان ۱/۲ است و <strong>یک سهم از چهار سهم</strong> که همان ۱/۴ است.</p>
+  <div class="proof-steps">
+    <div class="proof-step"><b>۱</b><p>صورت ۳ را به مجموع شمارنده‌های ۴ یعنی ۲+۱ تجزیه می‌کنیم: <span class="m">3/4 = (2+1)/4</span></p></div>
+    <div class="proof-step"><b>۲</b><p>کسر را به دو کسر با مخرج یکسان می‌شکنیم: <span class="m">(2+1)/4 = 2/4 + 1/4</span></p></div>
+    <div class="proof-step"><b>۳</b><p>کسر اول را ساده می‌کنیم: <span class="m">2/4 = 1/2</span>؛ پس <span class="m">3/4 = 1/2 + 1/4</span>.</p></div>
+  </div>
+  <div class="tip-box"><div class="box-title">کنترل درستی با مخرج مشترک</div><p>برای اطمینان، سمت راست را دوباره جمع کن: <span class="m">1/2 + 1/4 = 2/4 + 1/4 = 3/4</span>. هر تجزیه‌ای که به کسر اولیه برگردد، درست است.</p></div>
+  <div class="note-box"><div class="box-title">نکته مهم: یک تجزیه، تنها راه نیست</div><p>برای یک کسر ممکن است بیش از یک نمایش مصری وجود داشته باشد. هدف این فصل پیدا کردن یک نمایش درست با روش‌های مشخص است، نه پیدا کردن همه نمایش‌ها.</p></div>
+
+  <div class="quiz" data-answer="b" data-scored="0">
+    <span class="quiz-tag">بررسی یادگیری · معنای تجزیه</span>
+    <div class="quiz-q">کدام عبارت یک نمایش مصری برای ۵/۶ است؟</div>
+    <div class="opts">
+      <button class="opt" data-v="a">۱/۶ + ۱/۶</button>
+      <button class="opt" data-v="b">۱/۲ + ۱/۳</button>
+      <button class="opt" data-v="c">۱/۲ + ۱/۶</button>
+      <button class="opt" data-v="d">۱/۵ + ۱/۱</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">بررسی با مخرج ۶</div><p><span class="m">1/2 + 1/3 = 3/6 + 2/6 = 5/6</span>. دو جمله کسر واحد هستند و مجموعشان دقیقاً کسر داده‌شده است.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ ۳. فرمول کسر واحد ============ -->
+<section class="card" id="e3">
+  <div class="sec-head"><div class="sec-num">۳</div><h2>فرمول تبدیل کسر واحد به کسر مصری</h2></div>
+  <p class="lead">این فرمول هر کسر واحد را به مجموع دو کسر واحد تبدیل می‌کند.</p>
+  <div class="formula-box gold">
+    <span class="frac big"><span class="fn">۱</span><span class="fd">n</span></span> =
+    <span class="frac big"><span class="fn">۱</span><span class="fd">n+1</span></span> +
+    <span class="frac big"><span class="fn">۱</span><span class="fd">n(n+1)</span></span>
+  </div>
+  <div class="tip-box"><div class="box-title">چرا فرمول درست است؟ اثبات در دو حرکت</div>
+    <p>مخرج مشترک دو کسر سمت راست، <span class="m">n(n+1)</span> است. کسر اول را در <span class="m">n/n</span> ضرب می‌کنیم:</p>
+    <div class="egy-equation">۱/(n+1) + ۱/[n(n+1)] = n/[n(n+1)] + ۱/[n(n+1)] = (n+1)/[n(n+1)] = ۱/n</div>
+    <p>در مرحله آخر، عامل مشترک <span class="m">n+1</span> از صورت و مخرج ساده می‌شود. پس دو طرف واقعاً برابرند.</p>
+  </div>
+  <h3 style="color:var(--em)">مثال حل‌شده: تجزیه ۱/۵</h3>
+  <div class="proof-steps">
+    <div class="proof-step"><b>۱</b><p>کسر با فرمول مقایسه می‌شود؛ پس <span class="m">n=5</span>.</p></div>
+    <div class="proof-step"><b>۲</b><p>عدد بعدی را حساب می‌کنیم: <span class="m">n+1=6</span> و حاصل‌ضرب: <span class="m">n(n+1)=5×6=30</span>.</p></div>
+    <div class="proof-step"><b>۳</b><p>جای‌گذاری می‌کنیم: <span class="m">1/5 = 1/6 + 1/30</span>.</p></div>
+  </div>
+  <div class="formula-lab">
+    <h3 style="color:var(--gold);margin-bottom:6px">آزمایشگاه فرمول ۱/n</h3>
+    <p>یک عدد طبیعی وارد کن تا هر دو مخرج و بررسی ریاضی تجزیه ساخته شود.</p>
+    <div class="lab-grid">
+      <div class="lab-input"><label for="unitN">مقدار n</label><input id="unitN" type="number" min="1" max="999" value="5" inputmode="numeric"><button class="btn btn-gold" id="unitBuild" type="button">ساختن تجزیه</button></div>
+      <div class="lab-result" id="unitResult" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="warn-box"><div class="box-title">اشتباه رایج</div><p>مخرج دوم <span class="m">n+1</span> نیست؛ بلکه <span class="m">n(n+1)</span> یعنی <strong>حاصل‌ضرب</strong> n و n+1 است. در مثال بالا، ۵×۶=۳۰، نه ۵+۶=۱۱.</p></div>
+  <div class="note-box"><div class="box-title">عمیق‌تر فکر کن: می‌توانی ادامه بدهی!</div><p>اگر یکی از کسرهای واحد حاصل را دوباره با همین فرمول تجزیه کنی، نمایشی با سه جمله به دست می‌آید. مثلاً با تجزیه ۱/۶ به ۱/۷+۱/۴۲ داریم: <span class="m">1/5 = 1/7 + 1/42 + 1/30</span>.</p></div>
+
+  <div class="quiz" data-answer="d" data-scored="0">
+    <span class="quiz-tag">بررسی یادگیری · فرمول کسر واحد</span>
+    <div class="quiz-q">در تجزیه <span class="m">1/8 = 1/9 + 1/؟</span> مخرج جای خالی چند است؟</div>
+    <div class="opts"><button class="opt" data-v="a">۱۷</button><button class="opt" data-v="b">۶۴</button><button class="opt" data-v="c">۹</button><button class="opt" data-v="d">۷۲</button></div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">محاسبه</div><p>چون <span class="m">n=8</span> و <span class="m">n+1=9</span>، مخرج دوم <span class="m">n(n+1)=8×9=72</span> است. پس <span class="m">1/8=1/9+1/72</span>.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ ۴. فرمول دو بر عدد فرد ============ -->
+<section class="card" id="e4">
+  <div class="sec-head"><div class="sec-num">۴</div><h2>فرمول تبدیل ۲ بر عدد فرد به کسر مصری</h2></div>
+  <p class="lead">وقتی صورت ۲ و مخرج عددی فرد باشد، مخرج را به شکل <span class="m">2n+1</span> می‌نویسیم.</p>
+  <div class="formula-box gold">
+    <span class="frac big"><span class="fn">۲</span><span class="fd">2n+1</span></span> =
+    <span class="frac big"><span class="fn">۱</span><span class="fd">n+1</span></span> +
+    <span class="frac big"><span class="fn">۱</span><span class="fd">(2n+1)(n+1)</span></span>
+  </div>
+  <div class="key-point"><h4>اول n را پیدا کن</h4><p>از تساوی <span class="m">مخرج = 2n+1</span> شروع کن. یک واحد کم کن و بر ۲ تقسیم کن: <span class="m">n=(مخرج−1)/2</span>. چون مخرج فرد است، این نتیجه همیشه عددی طبیعی می‌شود.</p></div>
+  <div class="tip-box"><div class="box-title">اثبات کوتاه فرمول</div><p>دو کسر سمت راست را با مخرج مشترک <span class="m">(2n+1)(n+1)</span> جمع می‌کنیم:</p><div class="egy-equation">(2n+1)/[(2n+1)(n+1)] + ۱/[(2n+1)(n+1)] = (2n+2)/[(2n+1)(n+1)] = ۲/(2n+1)</div><p>در پایان، صورت و مخرج را بر <span class="m">n+1</span> تقسیم کرده‌ایم.</p></div>
+  <h3 style="color:var(--em)">مثال حل‌شده: تجزیه ۲/۳۵</h3>
+  <div class="proof-steps">
+    <div class="proof-step"><b>۱</b><p>مخرج ۳۵ فرد است. پس <span class="m">2n+1=35</span> و <span class="m">n=(35−1)/2=17</span>.</p></div>
+    <div class="proof-step"><b>۲</b><p>مخرج کسر اول: <span class="m">n+1=18</span>.</p></div>
+    <div class="proof-step"><b>۳</b><p>مخرج کسر دوم: <span class="m">(2n+1)(n+1)=35×18=630</span>.</p></div>
+    <div class="proof-step"><b>۴</b><p>نتیجه: <span class="m">2/35 = 1/18 + 1/630</span>.</p></div>
+  </div>
+  <div class="formula-lab">
+    <h3 style="color:var(--gold);margin-bottom:6px">آزمایشگاه ۲ بر عدد فرد</h3>
+    <p>مخرج فرد را وارد کن؛ ابزار مقدار n، هر دو مخرج و راه محاسبه را نشان می‌دهد.</p>
+    <div class="lab-grid">
+      <div class="lab-input"><label for="oddDenominator">مخرج فرد</label><input id="oddDenominator" type="number" min="3" max="999" step="2" value="35" inputmode="numeric"><button class="btn btn-gold" id="oddBuild" type="button">محاسبه و تجزیه</button></div>
+      <div class="lab-result" id="oddResult" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="warn-box"><div class="box-title">این فرمول برای چه شکلی است؟</div><p>صورت باید ۲ و مخرج باید فرد باشد. برای مثال ۲/۳۵ مناسب است، اما ۳/۳۵ صورت مناسب ندارد و ۲/۳۶ مخرج فرد ندارد. در چنین حالتی ابتدا ساده‌سازی یا روش‌های دیگر را بررسی کن.</p></div>
+
+  <div class="quiz" data-answer="a" data-scored="0">
+    <span class="quiz-tag">بررسی یادگیری · دو بر عدد فرد</span>
+    <div class="quiz-q">کدام تجزیه برای ۲/۱۵ درست است؟</div>
+    <div class="opts"><button class="opt" data-v="a">۱/۸ + ۱/۱۲۰</button><button class="opt" data-v="b">۱/۷ + ۱/۱۰۵</button><button class="opt" data-v="c">۱/۱۶ + ۱/۲۴۰</button><button class="opt" data-v="d">۱/۸ + ۱/۱۵</button></div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">محاسبه مرحله‌به‌مرحله</div><p><span class="m">n=(15−1)/2=7</span>، پس <span class="m">n+1=8</span> و <span class="m">15×8=120</span>. بنابراین <span class="m">2/15=1/8+1/120</span>.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ ۵. قاعده شمارنده‌ها ============ -->
+<section class="card" id="e5">
+  <div class="sec-head"><div class="sec-num">۵</div><h2>قاعده اول: صورت، مجموع شمارنده‌های مخرج</h2></div>
+  <p class="lead">بعضی کسرها بدون فرمول‌های قبلی هم به‌راحتی باز می‌شوند؛ فقط باید شمارنده‌های مخرج را خوب بشناسی.</p>
+  <div class="key-point"><h4>قاعده</h4><p>اگر صورت کسر، مجموع بعضی از شمارنده‌های مخرج باشد، صورت را به همان مجموع تجزیه می‌کنیم. سپس کسر را به چند کسر می‌شکنیم و هر کدام را ساده می‌کنیم تا کسرهای واحد ساخته شوند.</p></div>
+  <h3 style="color:var(--em)">مثال اول: ۵/۶</h3>
+  <p>شمارنده‌های ۶ عبارت‌اند از ۱، ۲، ۳ و ۶. می‌بینیم <span class="m">5=2+3</span>؛ پس:</p>
+  <div class="egy-equation">۵/۶ = (۲+۳)/۶ = ۲/۶ + ۳/۶ = ۱/۳ + ۱/۲</div>
+  <h3 style="color:var(--em)">مثال دوم: ۷/۸</h3>
+  <p>شمارنده‌های ۸ عبارت‌اند از ۱، ۲، ۴ و ۸. این‌بار سه شمارنده لازم داریم: <span class="m">7=4+2+1</span>.</p>
+  <div class="egy-equation">۷/۸ = (۴+۲+۱)/۸ = ۴/۸ + ۲/۸ + ۱/۸ = ۱/۲ + ۱/۴ + ۱/۸</div>
+  <div class="tip-box"><div class="box-title">الگوریتم انتخاب شمارنده‌ها</div><p>۱) شمارنده‌های مخرج را بنویس. ۲) از شمارنده بزرگ‌تر شروع کن و اگر از صورت بیشتر نباشد، آن را انتخاب کن. ۳) مقدار انتخاب‌شده را از صورت کم کن و برای باقی‌مانده ادامه بده. ۴) در پایان، مجموع انتخاب‌ها و ساده‌شدن کسرها را بررسی کن. این روش حریصانه همیشه لازم نیست، اما برای تمرین‌های این فصل مسیر روشنی می‌دهد.</p></div>
+
+  <h3 style="color:var(--gold);margin-top:28px">آزمایشگاه شمارنده‌یاب</h3>
+  <p>در هر مرحله، شمارنده‌هایی از مخرج را انتخاب کن که مجموعشان دقیقاً صورت شود. سپس دکمه ساختن تجزیه را بزن.</p>
+  <div class="divisor-board">
+    <div>
+      <div class="divisor-progress" id="divisorProgress" aria-label="پیشرفت سه مرحله"></div>
+      <div class="egy-equation" id="divisorQuestion" style="font-size:1.8rem"></div>
+      <div class="mini-label">شمارنده‌های مخرج را انتخاب کن:</div>
+      <div class="divisor-choices" id="divisorChoices"></div>
+      <div class="sum-meter"><span>مجموع انتخاب‌ها</span><strong id="divisorSum">۰</strong></div>
+      <div class="builder-actions"><button class="btn" id="divisorBuild" type="button">ساختن تجزیه</button><button class="btn btn-ghost" id="divisorClear" type="button">پاک‌کردن انتخاب</button></div>
+    </div>
+    <div class="fraction-stage">
+      <div class="mini-label">نمایش مصری و بررسی</div>
+      <div class="builder-visual" id="divisorResult" aria-live="polite">برای شروع، شمارنده‌ها را انتخاب کن.</div>
+      <div class="feedback" id="divisorFeedback"></div>
+      <div class="center" style="margin-top:12px"><button class="btn btn-gold hidden" id="divisorNext" type="button">مرحله بعد</button></div>
+    </div>
+  </div>
+
+  <div class="quiz" data-answer="c" data-scored="0">
+    <span class="quiz-tag">بررسی یادگیری · قاعده شمارنده‌ها</span>
+    <div class="quiz-q">برای تجزیه ۹/۲۰ با قاعده شمارنده‌ها، صورت ۹ را بهتر است چگونه بنویسیم؟</div>
+    <div class="opts"><button class="opt" data-v="a">۲ + ۷</button><button class="opt" data-v="b">۳ + ۶</button><button class="opt" data-v="c">۵ + ۴</button><button class="opt" data-v="d">۸ + ۱</button></div>
+    <div class="feedback"></div>
+    <div class="quiz-actions"><button class="btn btn-ghost sol-toggle">نمایش راه‌حل</button></div>
+    <div class="sol-box"><div class="sol-in"><div class="sol-title">چرا ۵ و ۴؟</div><p>هر دو عدد ۵ و ۴ شمارنده ۲۰ هستند و مجموعشان ۹ است. پس <span class="m">9/20=(5+4)/20=5/20+4/20=1/4+1/5</span>. عددهای ۷، ۳، ۶ و ۸ شمارنده ۲۰ نیستند.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ ۶. تمرین نهایی ============ -->
+<section class="card" id="e6">
+  <div class="sec-head"><div class="sec-num">۶</div><h2>تمرین نهایی: روش را انتخاب و تجزیه را کامل کن</h2></div>
+  <p class="lead">در هر سؤال فقط مخرج جای خالی را وارد کن. رقم فارسی و انگلیسی هر دو پذیرفته می‌شود؛ اگر خطا رفتی، راهنمای همان روش را می‌گیری.</p>
+  <div class="qz-card egy-question" data-answer="156" data-hint="اینجا n=۱۲ است؛ مخرج دوم را از حاصل‌ضرب n و n+1 به دست بیاور." data-solution="۱/۱۲ = ۱/۱۳ + ۱/۱۵۶، زیرا ۱۲×۱۳=۱۵۶.">
+    <div class="ex-head"><span class="ex-badge">تمرین ۱ · فرمول کسر واحد</span></div>
+    <div class="exq">۱/۱۲ = ۱/۱۳ + ۱/؟</div>
+    <div class="answer-row"><input type="text" class="ans" inputmode="numeric" placeholder="مخرج جای خالی" autocomplete="off" aria-label="پاسخ تمرین یک"><button class="btn check" type="button">بررسی پاسخ</button><button class="btn btn-ghost hint" type="button">راهنما</button></div><div class="feedback"></div>
+  </div>
+  <div class="qz-card egy-question" data-answer="231" data-hint="برای ۲/۲۱، مقدار n برابر (۲۱−۱)÷۲=۱۰ است؛ پس n+1=۱۱." data-solution="۲/۲۱ = ۱/۱۱ + ۱/۲۳۱، زیرا مخرج دوم ۲۱×۱۱=۲۳۱ است.">
+    <div class="ex-head"><span class="ex-badge">تمرین ۲ · دو بر عدد فرد</span></div>
+    <div class="exq">۲/۲۱ = ۱/۱۱ + ۱/؟</div>
+    <div class="answer-row"><input type="text" class="ans" inputmode="numeric" placeholder="مخرج جای خالی" autocomplete="off" aria-label="پاسخ تمرین دو"><button class="btn check" type="button">بررسی پاسخ</button><button class="btn btn-ghost hint" type="button">راهنما</button></div><div class="feedback"></div>
+  </div>
+  <div class="qz-card egy-question" data-answer="3" data-hint="صورت ۵ را به ۲+۳ تجزیه کن؛ ۲/۶ ساده می‌شود." data-solution="۵/۶ = ۲/۶ + ۳/۶ = ۱/۳ + ۱/۲؛ پس مخرج جای خالی ۳ است.">
+    <div class="ex-head"><span class="ex-badge">تمرین ۳ · قاعده شمارنده‌ها</span></div>
+    <div class="exq">۵/۶ = ۱/۲ + ۱/؟</div>
+    <div class="answer-row"><input type="text" class="ans" inputmode="numeric" placeholder="مخرج جای خالی" autocomplete="off" aria-label="پاسخ تمرین سه"><button class="btn check" type="button">بررسی پاسخ</button><button class="btn btn-ghost hint" type="button">راهنما</button></div><div class="feedback"></div>
+  </div>
+  <div class="qz-card egy-question" data-answer="5" data-hint="۹=۵+۴ و هر دو عدد شمارنده ۲۰ هستند. ۵/۲۰ را ساده کن." data-solution="۹/۲۰ = ۵/۲۰ + ۴/۲۰ = ۱/۴ + ۱/۵؛ پس مخرج جای خالی ۵ است.">
+    <div class="ex-head"><span class="ex-badge hard">تمرین ۴ · انتخاب روش</span></div>
+    <div class="exq">۹/۲۰ = ۱/۴ + ۱/؟</div>
+    <div class="answer-row"><input type="text" class="ans" inputmode="numeric" placeholder="مخرج جای خالی" autocomplete="off" aria-label="پاسخ تمرین چهار"><button class="btn check" type="button">بررسی پاسخ</button><button class="btn btn-ghost hint" type="button">راهنما</button></div><div class="feedback"></div>
+  </div>
+  <div class="egy-final-score" id="egyFinalScore" aria-live="polite">پاسخ‌های درست: ۰ از ۴</div>
+  <div class="egy-summary">
+    <h3 style="color:var(--gold)">جمع‌بندی: نقشه انتخاب روش</h3>
+    <ol>
+      <li><strong>صورت ۱ است؟</strong> از <span class="m">1/n = 1/(n+1) + 1/[n(n+1)]</span> استفاده کن.</li>
+      <li><strong>صورت ۲ و مخرج فرد است؟</strong> مخرج را <span class="m">2n+1</span> بنویس، سپس <span class="m">n=(مخرج−1)/2</span> و فرمول مربوط را به کار ببر.</li>
+      <li><strong>صورت، مجموع شمارنده‌های مخرج است؟</strong> صورت را به همان مجموع بشکن، کسرها را جدا کن و ساده کن.</li>
+      <li><strong>همیشه بررسی کن:</strong> مجموع کسرهای واحد به‌دست‌آمده باید دقیقاً با کسر اولیه برابر باشد.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= آزمون جامع ================= -->
+<div class="ch9-divider examv" id="examhead">
+  <span class="sym" style="top:20%;right:6%">✓</span>
+  <span class="sym" style="bottom:22%;left:7%">½</span>
+  <span class="sym" style="top:40%;left:11%">n²</span>
+  <span class="badge">🎓 آزمون جامع نهایی</span>
+  <h2>آزمون جامع: کسرهای تلسکوپی + فرمول‌های مجموع</h2>
+  <p>۵۰ سؤال چهارگزینه‌ای در بانک سؤال: ۲۴ سؤال تلسکوپی و ۲۶ سؤال از فرمول‌های مجموع. در هر اجرا، سؤال‌ها و ترتیب گزینه‌ها تصادفی مرتب می‌شوند تا هر بار یک آزمون تازه داشته باشی. بعد از هر پاسخ، گزینهٔ درست و راه‌حل نمایش داده می‌شود و در پایان، درصد و مرور کامل سؤال‌ها را می‌بینی.</p>
+</div>
+
+<section class="card" id="exam">
+  <div class="sec-head"><div class="sec-num">🎓</div><h2>آزمون جامع — ۵۰ سؤال در بانک سؤال</h2></div>
+  <p class="lead">چند سؤال می‌خواهی؟ انتخاب کن و شروع کن — سؤال‌ها از آسان به دشوار در بانک چیده شده‌اند و هر بار به‌صورت تصادفی انتخاب می‌شوند.</p>
+  <div class="mini-chips"><span>📚 ۲۴ سؤال تلسکوپی</span><span>🧮 ۲۶ سؤال مجموع‌ها</span><span>۴ گزینه‌ای</span><span>راه‌حل بعد از هر پاسخ</span><span>درصد و مرور نهایی</span></div>
+  <div class="exam-wrap" id="exambox">
+    <div id="exStart" class="center">
+      <p>طول آزمون را انتخاب کن:</p>
+      <div class="modes">
+        <button class="mode ghosty" data-n="10">۱۰ سؤال<small>گرم‌کردن سریع</small></button>
+        <button class="mode" data-n="20">۲۰ سؤال<small>استاندارد — پیشنهاد ما</small></button>
+        <button class="mode gold" data-n="50">همهٔ ۵۰ سؤال<small>چالش کامل!</small></button>
+      </div>
+    </div>
+    <div id="exPlay" class="hidden">
+      <div class="exam-top">
+        <div class="exam-chips"><span class="tchip" id="exTopic">📚</span><span class="tchip gold" id="exCount">سؤال ۱</span><span class="tchip gold" id="exSc">امتیاز: ۰</span></div>
+      </div>
+      <div class="eprogress"><i id="exBar"></i></div>
+      <div class="exq" id="exQ">…</div>
+      <div class="opts" id="exOpts"></div>
+      <div class="quiz-actions">
+        <button class="btn" id="exCheck" disabled>✅ بررسی پاسخ</button>
+        <button class="btn btn-ghost hidden" id="exSolBtn">💡 نمایش راه‌حل</button>
+        <button class="btn btn-gold hidden" id="exNext">سؤال بعدی ←</button>
+      </div>
+      <div class="feedback" id="exFb"></div>
+      <div class="sol-box" id="exSolBox"><div class="sol-in"><div class="sol-title">📝 راه‌حل</div><div id="exSolTxt"></div></div></div>
+    </div>
+    <div id="exFinal" class="hidden">
+      <div class="ringbox">
+        <svg width="170" height="170" viewBox="0 0 120 120">
+          <defs><linearGradient id="ringGradEx" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs>
+          <circle class="bgc" cx="60" cy="60" r="52"/>
+          <circle class="fgc" id="exRing" cx="60" cy="60" r="52" stroke="url(#ringGradEx)" stroke-dasharray="327" stroke-dashoffset="327"/>
+        </svg>
+        <div class="ring-num"><b id="exPct">۰٪</b><span>درصد موفقیت</span></div>
+      </div>
+      <div class="final-msg" id="exFinalMsg"></div>
+      <div class="final-detail" id="exDetail"></div>
+      <div class="review-list" id="exRev"></div>
+      <div class="center" style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn" id="exAgain">🔁 آزمون دوباره با همان تعداد</button>
+        <button class="btn btn-ghost" id="exHome">⚙️ تغییر تعداد سؤال‌ها</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  ساخته‌شده با <span class="heart">❤</span> برای یادگیری عمیق ریاضی — کسرهای تلسکوپی و فرمول‌های سریع مجموع اعداد 🌲✨<br>
+  <span style="font-size:.78rem;opacity:.7">تمام فرمول‌ها قبل از انتشار از نظر ریاضی بررسی و اثبات شده‌اند.</span>
+</footer>
+<button class="icon-btn back-top" id="backTop" type="button" aria-label="بازگشت به ابتدای صفحه" title="بازگشت به بالا"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6M12 8v12"/></svg></button>
+<script>
+'use strict';
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FA='۰۱۲۳۴۵۶۷۸۹';
+const toFa = n => String(n).replace(/[0-9]/g, d => FA[+d]);
+const norm = s => String(s).trim().replace(/[۰-۹]/g, d => FA.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g, '');
+
+/* ---------- Night-forest particles: stars + fireflies ---------- */
+(function(){
+  const cv=document.getElementById('bgCanvas'), ctx=cv.getContext('2d');
+  let W,H,stars=[],flies=[];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();addEventListener('resize',resize);
+  for(let i=0;i<85;i++)stars.push({x:Math.random(),y:Math.random()*0.85,r:Math.random()*1.3+0.4,p:Math.random()*Math.PI*2,sp:Math.random()*0.02+0.006});
+  for(let i=0;i<13;i++)flies.push({x:Math.random(),y:Math.random(),a:Math.random()*Math.PI*2,r:Math.random()*1.6+1.3,t:Math.random()*100});
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      const o=0.25+0.55*(0.5+0.5*Math.sin(s.p+t*s.sp*0.06));
+      ctx.globalAlpha=o;ctx.fillStyle='#dff5ea';
+      ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,7);ctx.fill();
+    });
+    flies.forEach(f=>{
+      f.t+=0.008;f.a+=0.012;
+      const x=(f.x+0.06*Math.cos(f.a+f.t))*W, y=(f.y+0.05*Math.sin(f.a*1.3+f.t))*H;
+      const pulse=0.55+0.45*Math.sin(f.t*3);
+      ctx.globalAlpha=pulse;
+      ctx.save();ctx.shadowColor='#fbbf24';ctx.shadowBlur=14;
+      ctx.fillStyle='#fde68a';ctx.beginPath();ctx.arc(x,y,f.r,0,7);ctx.fill();ctx.restore();
+    });
+    ctx.globalAlpha=1;
+    if(!REDUCED)requestAnimationFrame(draw);
+  }
+  draw(0);
+})();
+
+/* ---------- Progress + scrollspy + reveal ---------- */
+const pbar=document.getElementById('pbar');
+const secs=[...document.querySelectorAll('section.card')];
+const navLinks=[...document.querySelectorAll('.nav-links a')];
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  pbar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=null;const y=scrollY+150;
+  secs.forEach(s=>{if(s.offsetTop<=y)cur=s.id;});
+  navLinks.forEach(l=>{
+    let target='#'+cur;
+    if(cur&&/^e[1-6]$/.test(cur))target='#egy';
+    if(cur&&/^n[1-57]$/.test(cur))target='#ch9';
+    l.classList.toggle('active',l.getAttribute('href')===target);
+  });
+},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+}),{threshold:0.1});
+secs.forEach(s=>io.observe(s));
+
+/* ---------- Confetti ---------- */
+function confetti(){
+  if(REDUCED)return;
+  const c=document.createElement('canvas');
+  c.style.cssText='position:fixed;inset:0;z-index:999;pointer-events:none';
+  document.body.appendChild(c);
+  const ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#34d399','#2dd4bf','#fbbf24','#f87171','#e8f3ec'];
+  const ps=[];
+  for(let i=0;i<95;i++)ps.push({x:innerWidth/2,y:innerHeight*0.42,vx:(Math.random()-0.5)*15,vy:-Math.random()*12-4,s:Math.random()*7+4,r:Math.random()*7,vr:(Math.random()-0.5)*0.35,col:cols[i%5],life:1});
+  (function frame(){
+    ctx.clearRect(0,0,c.width,c.height);let alive=false;
+    ps.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.33;p.vx*=0.99;p.r+=p.vr;p.life-=0.011;
+      if(p.life>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(p.life,0);ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.col;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.62);ctx.restore();}
+    });
+    if(alive)requestAnimationFrame(frame);else c.remove();
+  })();
+}
+
+/* ---------- Teleport magic: strike canceling terms ---------- */
+document.querySelectorAll('[data-cancel]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.disabled=true;btn.textContent='✨ جمله‌های میانی حذف شدند!';
+    btn.dataset.cancel.split(/\s+/).forEach(id=>{
+      const box=document.getElementById(id);if(!box)return;
+      box.querySelectorAll('.term[data-pair]').forEach(t=>t.classList.add('struck'));
+      box.querySelectorAll('.survivor').forEach(s=>s.classList.add('glow'));
+    });
+  });
+});
+
+/* ---------- Score ---------- */
+let score=0;
+const quizTotal=document.querySelectorAll('.quiz').length;
+document.getElementById('scoreMax').textContent=toFa(quizTotal);
+function updateScore(){document.getElementById('score').textContent=toFa(score);}
+
+/* ---------- Solution toggles ---------- */
+document.querySelectorAll('.sol-toggle').forEach(btn=>{
+  btn.dataset.closed=btn.textContent;
+  btn.addEventListener('click',()=>{
+    const scope=btn.closest('.quiz')||btn.closest('.ex-card')||btn.closest('.qz-card');
+    const box=scope.querySelector('.sol-box');
+    const open=box.style.maxHeight&&box.style.maxHeight!=='0px';
+    box.style.maxHeight=open?'0px':(box.scrollHeight+120)+'px';
+    btn.textContent=open?btn.dataset.closed:'🙈 بستن راه‌حل';
+  });
+});
+
+/* ---------- MC quizzes ---------- */
+document.querySelectorAll('.quiz').forEach(q=>{
+  const opts=[...q.querySelectorAll('.opt')];
+  const fb=q.querySelector('.feedback');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    if(q.dataset.done==='1')return;
+    if(o.dataset.v===q.dataset.answer){
+      q.dataset.done='1';
+      opts.forEach(x=>x.disabled=true);
+      o.classList.add('correct');
+      fb.className='feedback ok';
+      fb.textContent='🎉 آفرین! جواب کاملاً درست است.';
+      if(q.dataset.scored==='0'){q.dataset.scored='1';score++;updateScore();confetti();}
+    }else{
+      o.classList.add('wrong');o.disabled=true;
+      fb.className='feedback err';
+      fb.textContent='🤔 نه! دوباره فکر کن — به فرمول و مثال همان بخش سر بزن، بعد برگرد.';
+    }
+  }));
+});
+
+/* ---------- Fraction parsing & exercises ---------- */
+function parseFrac(s){
+  if(!s)return null;
+  if(s.includes('/')){
+    const p=s.split('/');if(p.length!==2)return null;
+    const n=Number(p[0]),d=Number(p[1]);
+    if(!isFinite(n)||!isFinite(d)||d===0)return null;
+    return{n,d};
+  }
+  const v=Number(s);
+  return isFinite(v)?{n:v,d:1}:null;
+}
+let exDone=0;
+const exMsgs=['هر تمرین را که درست جواب بدهی، اینجا روشن می‌شود!','شروع خوبی بود! ادامه بده 💪','داری گرم می‌شوی! 🔥','نصف راه را آمدی — عالی!','تقریباً تمام شد، یک قدم مانده!','🏆 فوق‌العاده! همه تمرین‌ها حل شد — حالا تو استاد کسرهای تلسکوپی هستی!'];
+function updateEx(){
+  document.getElementById('exScore').textContent=toFa(exDone);
+  document.getElementById('exMsg').textContent=exMsgs[exDone];
+}
+document.querySelectorAll('.ex-card').forEach(card=>{
+  const ans=parseFrac(card.dataset.answer);
+  const inp=card.querySelector('.ans'),btn=card.querySelector('.check'),fb=card.querySelector('.feedback');
+  function check(){
+    if(card.dataset.solved==='1')return;
+    const v=parseFrac(norm(inp.value));
+    if(!v){fb.className='feedback err';fb.textContent='✏️ جواب را به شکل کسر وارد کن، مثل 4/5 یا ۴/۵ (یا یک عدد صحیح).';return;}
+    if(v.n*ans.d===ans.n*v.d){
+      inp.classList.remove('no');inp.classList.add('ok');inp.disabled=true;btn.disabled=true;
+      fb.className='feedback ok';fb.textContent='🎉 دقیقاً درست است! جواب پذیرفته شد.';
+      if(card.dataset.solved==='0'){card.dataset.solved='1';exDone++;updateEx();confetti();}
+    }else{
+      inp.classList.add('no');setTimeout(()=>inp.classList.remove('no'),600);
+      fb.className='feedback err';fb.textContent='❌ هنوز نه! تجزیه را دوباره بنویس، ضریب را چک کن، یا راه‌حل را ببین و برگرد.';
+    }
+  }
+  btn.addEventListener('click',check);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* ---------- Diagnosis helper tool ---------- */
+const hC=document.getElementById('hC'),hA=document.getElementById('hA'),hB=document.getElementById('hB'),
+      hGo=document.getElementById('hGo'),hOut=document.getElementById('hOut');
+function gcd(x,y){return y?gcd(y,x%y):x;}
+function coefTxt(c,d){
+  if(c===d)return'بدون ضریب (۱)';
+  const g=gcd(c,d);
+  return toFa(c/g)+'/'+toFa(d/g);
+}
+hGo.addEventListener('click',()=>{
+  const c=+norm(hC.value),a=+norm(hA.value),b=+norm(hB.value);
+  if(!Number.isInteger(c)||!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1||c<1||b<=a){
+    hOut.style.display='block';
+    hOut.innerHTML='<div class="feedback err" style="display:block">⚠️ عددها باید صحیح و مثبت باشند و عدد دوم مخرج از عدد اول بزرگ‌تر!</div>';
+    return;
+  }
+  const d=b-a;
+  let chip,coef,decomp;
+  if(c===d){
+    chip='<span class="case-chip chip1">🟢 حالت اول</span>';
+    coef='بدون ضریب — صورت دقیقاً برابر اختلاف مخرج‌ها است';
+    decomp=toFa(c)+'/'+toFa(a)+'×'+toFa(b)+' = ۱/'+toFa(a)+' − ۱/'+toFa(b);
+  }else{
+    const k=c===1?'۱':'c';
+    chip=c===1?'<span class="case-chip chip2">🔵 حالت دوم (صورت ۱)</span>':'<span class="case-chip chip3">🟡 حالت سوم (صورت دلخواه)</span>';
+    coef='ضریب '+coefTxt(c,d)+(c===1?' (یعنی ۱/'+toFa(d)+')':' (یعنی c/'+toFa(d)+')');
+    decomp=toFa(c)+'/'+toFa(a)+'×'+toFa(b)+' = ('+coefTxt(c,d)+') × ( ۱/'+toFa(a)+' − ۱/'+toFa(b)+' )';
+  }
+  hOut.style.display='block';
+  hOut.innerHTML=
+    '<div style="margin-bottom:8px">'+chip+'</div>'+
+    '<p>اختلاف مخرج‌ها: <strong style="color:var(--gold)">d = '+toFa(b)+' − '+toFa(a)+' = '+toFa(d)+'</strong></p>'+
+    '<p>'+coef+'</p>'+
+    '<div class="formula-box" style="margin:10px 0">'+decomp+'</div>'+
+    '<p style="font-size:.9rem;color:var(--mut)">💡 برای تلسکوپی شدن، مخرج کسرِ بعدیِ مجموع باید از '+toFa(b)+' شروع شود تا جمله‌های میانی حذف شوند.</p>';
+  hOut.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'nearest'});
+});
+
+/* ---------- Mini game: classify the case ---------- */
+const mgQs=[
+  {f:'۳ ÷ (۱×۴)',c:1,why:'صورت ۳ و اختلاف مخرج‌ها ۴−۱=۳ است ⇒ برابرند ⇒ حالت اول.'},
+  {f:'۱ ÷ (۳×۸)',c:2,why:'صورت ۱ و اختلاف ۸−۳=۵ ⇒ حالت دوم با ضریب ۱/۵.'},
+  {f:'۵ ÷ (۲×۹)',c:3,why:'صورت ۵ و اختلاف ۹−۲=۷ ⇒ نه برابر اختلاف، نه ۱ ⇒ حالت سوم با ضریب ۵/۷.'},
+  {f:'۷ ÷ (۲×۹)',c:1,why:'صورت ۷ و اختلاف ۹−۲=۷ ⇒ برابرند ⇒ حالت اول!'},
+  {f:'۱ ÷ (۴×۱۲)',c:2,why:'صورت ۱ و اختلاف ۱۲−۴=۸ ⇒ حالت دوم با ضریب ۱/۸.'}
+];
+let mgIdx=0,mgOk=0;
+const mgQ=document.getElementById('mgQ'),mgFb=document.getElementById('mgFb'),mgDots=document.getElementById('mgDots');
+mgQs.forEach(()=>{const d=document.createElement('div');d.className='mg-dot';mgDots.appendChild(d);});
+function mgRender(){
+  mgQ.textContent=mgQs[mgIdx].f;
+  mgFb.className='feedback';mgFb.textContent='';
+  [...mgDots.children].forEach((d,i)=>d.classList.toggle('cur',i===mgIdx));
+}
+mgRender();
+document.querySelectorAll('#mg [data-case]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const q=mgQs[mgIdx];
+    const ok=+btn.dataset.case===q.c;
+    const dot=mgDots.children[mgIdx];
+    mgFb.className='feedback '+(ok?'ok':'err');
+    mgFb.textContent=(ok?'✅ درست! ':'❌ نه — ')+' «'+q.f+'» : '+q.why;
+    if(ok){mgOk++;dot.classList.add('done-ok');confetti();}
+    else dot.classList.add('done-err');
+    [...mgDots.children].forEach(d=>d.classList.remove('cur'));
+    mgIdx++;
+    setTimeout(()=>{
+      if(mgIdx<mgQs.length)mgRender();
+      else{mgQ.textContent='🎮 بازی تمام شد! نتیجه: '+toFa(mgOk)+' از '+toFa(mgQs.length)+(mgOk===5?' — چشم تیزبی برای تشخیص حالت‌ها داری! 🏆':' — جدول بخش ۵ را یک بار دیگر مرور کن 💪');mgFb.className='feedback ok';mgFb.textContent='می‌خواهی دوباره بازی کنی؟ صفحه را رفرش کن!';}
+    },2200);
+  });
+});
+/* ================= فصل ۹: کویزهای عددی (qz-card) ================= */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+let qzDone=0;
+const qzCards=[...document.querySelectorAll('.qz-card')];
+const qzMax=qzCards.length;
+document.getElementById('qz9Max').textContent=toFa(qzMax);
+function qzMsgTxt(){
+  if(qzDone===0)return'هر کویز را که درست جواب بدهی، اینجا روشن می‌شود!';
+  const r=qzDone/qzMax;
+  if(r===1)return'🏆 فوق‌العاده! همه‌ی کویزهای فصل ۹ حل شد — حالا برو سراغ آزمون فصل و آزمون جامع!';
+  if(r>=.75)return'🔥 خیلی نزدیک به تکمیل! ادامه بده.';
+  if(r>=.5)return'⚡ نصف راه را آمدی — عالی!';
+  return'💪 شروع خوبی بود! ادامه بده.';
+}
+function updateQz(){
+  document.getElementById('qz9Score').textContent=toFa(qzDone);
+  document.getElementById('qz9Msg').textContent=qzMsgTxt();
+}
+qzCards.forEach(card=>{
+  const ans=parseFrac(card.dataset.answer);
+  const inp=card.querySelector('.ans'),btn=card.querySelector('.check'),fb=card.querySelector('.feedback');
+  function check(){
+    if(card.dataset.solved==='1')return;
+    const v=parseFrac(norm(inp.value));
+    if(!v){fb.className='feedback err';fb.textContent='✏️ اول یک عدد وارد کن (یا کسر مثل 3/4).';return;}
+    if(v.n*ans.d===ans.n*v.d){
+      inp.classList.remove('no');inp.classList.add('ok');inp.disabled=true;btn.disabled=true;
+      fb.className='feedback ok';fb.textContent='🎉 دقیقاً درست است! روش حل برای مرور باز شد.';
+      const sb=card.querySelector('.sol-box');if(sb)sb.style.maxHeight=(sb.scrollHeight+140)+'px';
+      if(card.dataset.solved==='0'){card.dataset.solved='1';qzDone++;updateQz();confetti();}
+    }else{
+      inp.classList.add('no');setTimeout(()=>inp.classList.remove('no'),600);
+      fb.className='feedback err';fb.textContent='❌ هنوز درست نیست! یک بار دیگر تلاش کن؛ یا دکمه‌ی «نمایش راه‌حل» را بزن تا روش حل را قدم‌به‌قدم ببینی.';
+    }
+  }
+  btn.addEventListener('click',check);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* ================= ابزار ساخت فرمول برای آزمون‌ها ================= */
+const M=s=>'<span class="m">'+s+'</span>';
+const fr=(n,d)=>M('<span class="frac"><span class="fn">'+toFa(n)+'</span><span class="fd">'+toFa(d)+'</span></span>');
+const $id=x=>document.getElementById(x);
+
+/* ================= آزمون فصل ۹ — ۱۲ سؤال ================= */
+const T9=[
+ {q:'مجموع اعداد طبیعی از ۱ تا ۲۰ چقدر است؟ '+M('1 + 2 + 3 + … + 20'),a:'210',s:M('S = 20 × 21 / 2 = 420 / 2 = 210')+' ✓'},
+ {q:'مجموع ۱۵ عدد زوج طبیعی اول چقدر است؟ '+M('2 + 4 + 6 + … + 30'),a:'240',s:'n=15 ؛ '+M('S = 15 × 16 = 240')+' ✓ (آخرین عدد: ۲×۱۵=۳۰)'},
+ {q:'مجموع ۱۰ عدد فرد طبیعی اول چقدر است؟ '+M('1 + 3 + 5 + … + 19'),a:'100',s:M('S = 10² = 100')+' ✓ (آخرین عدد: ۲×۱۰−۱=۱۹)'},
+ {q:'مجموع اعداد طبیعی از ۱ تا ۵۰ چقدر است؟',a:'1275',s:M('S = 50 × 51 / 2 = 2550 / 2 = 1275')+' ✓'},
+ {q:'دنباله‌ی '+M('5, 8, 11, …, 59')+' (فاصله ۳) چند جمله دارد؟',a:'19',s:M('N = (59−5)/3 + 1 = 54/3 + 1 = 18 + 1 = 19')+' ✓'},
+ {q:'مجموع ۴۰ عدد زوج طبیعی اول چقدر است؟',a:'1640',s:M('S = 40 × 41 = 1640')+' ✓ (آخرین عدد: ۸۰)'},
+ {q:'مجموع ۵۰ عدد فرد طبیعی اول چقدر است؟',a:'2500',s:M('S = 50² = 2500')+' ✓ (آخرین عدد: ۹۹)'},
+ {q:'حاصل '+M('1 + 3 + 5 + … + 81')+' چقدر است؟',a:'1681',s:M('n = (81+1)/2 = 41')+' ؛ '+M('S = 41² = 1681')+' ✓'},
+ {q:'حاصل '+M('7 + 14 + 21 + … + 98')+' چقدر است؟',a:'735',s:M('N = (98−7)/7 + 1 = 14')+' ؛ '+M('S = (7+98)/2 × 14 = 52.5 × 14 = 735')+' ✓'},
+ {q:'حاصل '+M('5 + 9 + 13 + … + 93')+' چقدر است؟ (فاصله ۴)',a:'1127',s:M('N = (93−5)/4 + 1 = 23')+' ؛ '+M('S = (5+93)/2 × 23 = 49 × 23 = 1127')+' ✓'},
+ {q:'دنباله‌ی '+M('9, 15, 21, …, 75')+' (فاصله ۶) چند جمله دارد؟',a:'12',s:M('N = (75−9)/6 + 1 = 66/6 + 1 = 11 + 1 = 12')+' ✓'},
+ {q:'مجموع ۱۰۰ عدد فرد طبیعی اول چقدر است؟',a:'10000',s:M('S = 100² = 10000')+' ✓ (یک مربع کامل!)'}
+];
+let t9={i:0,sc:0,list:[],res:[]};
+function t9Start(){
+  t9.list=shuffle(T9.slice());t9.i=0;t9.sc=0;t9.res=[];
+  $id('t9Start').classList.add('hidden');$id('t9Final').classList.add('hidden');$id('t9Play').classList.remove('hidden');
+  t9Render();
+}
+function t9Render(){
+  const q=t9.list[t9.i];t9.res[t9.i]=false;
+  $id('t9Count').textContent='سؤال '+toFa(t9.i+1)+' از '+toFa(t9.list.length);
+  $id('t9Sc').textContent='امتیاز: '+toFa(t9.sc);
+  $id('t9Bar').style.width=(t9.i/t9.list.length*100)+'%';
+  $id('t9Q').innerHTML=q.q;
+  const inp=$id('t9Ans');inp.value='';inp.disabled=false;inp.classList.remove('ok');
+  $id('t9Check').disabled=false;$id('t9Check').classList.remove('hidden');
+  $id('t9SolBtn').classList.add('hidden');$id('t9Next').classList.add('hidden');
+  const fb=$id('t9Fb');fb.className='feedback';fb.textContent='';
+  $id('t9SolTxt').innerHTML=q.s;$id('t9SolBox').style.maxHeight='0px';
+  inp.focus();
+}
+function t9OpenSol(){const sb=$id('t9SolBox');sb.style.maxHeight=(sb.scrollHeight+160)+'px';}
+function t9CheckAns(){
+  const q=t9.list[t9.i],inp=$id('t9Ans'),fb=$id('t9Fb');
+  const v=parseFrac(norm(inp.value));
+  if(!v){fb.className='feedback err';fb.textContent='✏️ اول یک عدد وارد کن (یا کسر مثل 3/4).';return;}
+  const ans=parseFrac(q.a);
+  if(v.n*ans.d===ans.n*v.d){
+    t9.sc++;t9.res[t9.i]=true;
+    inp.classList.add('ok');inp.disabled=true;
+    $id('t9Check').disabled=true;$id('t9Check').classList.add('hidden');
+    fb.className='feedback ok';fb.textContent='🎉 دقیقاً درست است! روش حل برای مرور باز شد.';
+    t9OpenSol();confetti();
+    $id('t9Next').classList.remove('hidden');
+  }else{
+    fb.className='feedback err';fb.textContent='❌ هنوز درست نیست! یک بار دیگر تلاش کن؛ یا دکمه‌ی «نمایش راه‌حل» را بزن. می‌توانی با «سؤال بعدی» هم ادامه دهی.';
+    $id('t9SolBtn').classList.remove('hidden');
+    $id('t9Next').classList.remove('hidden');
+  }
+  $id('t9Sc').textContent='امتیاز: '+toFa(t9.sc);
+}
+function t9Finish(){
+  $id('t9Play').classList.add('hidden');$id('t9Final').classList.remove('hidden');
+  const n=t9.list.length,p=Math.round(t9.sc/n*100);
+  $id('t9Detail').textContent='نتیجه: '+toFa(t9.sc)+' از '+toFa(n)+' پاسخ درست — درصد موفقیت: '+toFa(p)+'٪';
+  $id('t9Msg').textContent= p===100?'🏆 بی‌نقص! تو حالا استاد فرمول‌های مجموعی!':(p>=75?'🎉 عالی بود! فقط چند سؤال مانده تا کمال.':(p>=50?'👍 خوب بود — سؤال‌های نادرست را در مرور پایین ببین.':'💪 اشکالی ندارد! مباحث همین فصل را مرور کن و دوباره تلاش کن.'));
+  const C=2*Math.PI*52,ring=$id('t9Ring');
+  ring.style.strokeDasharray=C;ring.style.strokeDashoffset=C;
+  $id('t9Pct').textContent=toFa(p)+'٪';
+  requestAnimationFrame(()=>{setTimeout(()=>{ring.style.strokeDashoffset=C*(1-p/100);},80);});
+  const rv=$id('t9Rev');rv.innerHTML='';
+  t9.list.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='rev '+(t9.res[i]?'ok':'err');
+    d.innerHTML='<span class="ic">'+(t9.res[i]?'✓':'✗')+'</span><span class="rq">'+toFa(i+1)+') '+q.q+' — پاسخ درست: <b>'+toFa(q.a)+'</b></span>';
+    rv.appendChild(d);
+  });
+}
+$id('t9Go').addEventListener('click',t9Start);
+$id('t9Check').addEventListener('click',t9CheckAns);
+$id('t9Ans').addEventListener('keydown',e=>{if(e.key==='Enter')t9CheckAns();});
+$id('t9SolBtn').addEventListener('click',t9OpenSol);
+$id('t9Next').addEventListener('click',()=>{if(t9.i===t9.list.length-1)t9Finish();else{t9.i++;t9Render();}});
+$id('t9Again').addEventListener('click',t9Start);
+
+/* ================= آزمون جامع — بانک ۵۰ سؤال ================= */
+/* گزینهٔ درست همیشه عضو اول آرایه c است؛ در نمایش، گزینه‌ها به‌هم می‌ریزند. */
+const EXAM=[
+ {t:'تلسکوپی · تعریف',q:'حاصل '+M('1/(1×2) + 1/(2×3) + 1/(3×4)')+' کدام است؟',c:[fr(3,4),fr(1,2),fr(5,6),fr(1,4)],s:'تجزیه: '+M('(1−1/2)+(1/2−1/3)+(1/3−1/4)')+' ؛ جمله‌های میانی حذف ⇒ '+M('1 − 1/4 = 3/4')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('1/(2×3) + 1/(3×4) + 1/(4×5)')+' کدام است؟',c:[fr(3,10),fr(1,5),fr(4,15),fr(7,30)],s:M('1/2 − 1/5 = 5/10 − 2/10 = 3/10')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('1/(1×2) + 1/(2×3) + 1/(3×4) + 1/(4×5)')+' کدام است؟',c:[fr(4,5),fr(3,4),fr(5,6),fr(1,5)],s:'فقط دو سر می‌ماند: '+M('1 − 1/5 = 4/5')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('1/(3×4) + 1/(4×5) + 1/(5×6)')+' کدام است؟',c:[fr(1,6),fr(1,4),fr(1,12),fr(5,12)],s:M('1/3 − 1/6 = 2/6 − 1/6 = 1/6')+' ✓'},
+ {t:'تلسکوپی · فرمول',q:'کدام تساوی همیشه درست است؟',c:[M('(b−a)/(a×b) = 1/a − 1/b'),M('(b−a)/(a×b) = 1/b − 1/a'),M('(b−a)/(a×b) = 1/(a×b)'),M('(b−a)/(a×b) = 1/a + 1/b')],s:'با مخرج مشترک a×b: '+M('1/a − 1/b = b/(ab) − a/(ab) = (b−a)/(ab)')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('(7−3)/(3×7)')+' کدام است؟',c:[fr(4,21),fr(4,10),fr(1,21),fr(3,7)],s:'صورت = اختلاف مخرج‌ها ⇒ حالت اول: '+M('1/3 − 1/7 = 7/21 − 3/21 = 4/21')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('(5−2)/(2×5) + (8−5)/(5×8)')+' کدام است؟',c:[fr(3,8),fr(1,4),fr(3,10),fr(7,40)],s:M('(1/2−1/5) + (1/5−1/8) = 1/2 − 1/8 = 3/8')+' ✓'},
+ {t:'تلسکوپی · حالت دوم',q:'حاصل '+M('1/(1×3) + 1/(3×5) + 1/(5×7)')+' کدام است؟',c:[fr(3,7),fr(1,3),fr(5,7),fr(2,7)],s:'d=2 ⇒ ضریب 1/2: '+M('(1/2)(1 − 1/7) = (1/2)(6/7) = 3/7')+' ✓'},
+ {t:'تلسکوپی · حالت دوم',q:'حاصل '+M('1/(2×5) + 1/(5×8) + 1/(8×11)')+' کدام است؟',c:[fr(3,22),fr(1,11),fr(9,22),fr(1,22)],s:M('(1/3)(1/2 − 1/11) = (1/3)(9/22) = 3/22')+' ✓'},
+ {t:'تلسکوپی · حالت دوم',q:'حاصل '+M('1/(1×4) + 1/(4×7) + 1/(7×10)')+' کدام است؟',c:[fr(3,10),fr(1,4),fr(9,10),fr(3,7)],s:M('(1/3)(1 − 1/10) = (1/3)(9/10) = 3/10')+' ✓'},
+ {t:'تلسکوپی · حالت دوم',q:'حاصل '+M('1/(2×6) + 1/(6×10) + 1/(10×14)')+' کدام است؟',c:[fr(3,28),fr(1,14),fr(3,14),fr(1,8)],s:'d=4 ⇒ ضریب 1/4: '+M('(1/4)(1/2 − 1/14) = (1/4)(6/14) = 3/28')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('5/(2×5) + 5/(5×8) + 5/(8×11)')+' کدام است؟',c:[fr(15,22),fr(3,22),fr(5,22),fr(9,22)],s:'ضریب c/d = 5/3: '+M('(5/3)(1/2 − 1/11) = (5/3)(9/22) = 45/66 = 15/22')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('3/(2×4) + 3/(4×6) + 3/(6×8)')+' کدام است؟',c:[fr(9,16),fr(3,8),fr(3,16),fr(1,2)],s:'d=2، ضریب 3/2: '+M('(3/2)(1/2 − 1/8) = (3/2)(3/8) = 9/16')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('7/(3×10) + 7/(10×17)')+' کدام است؟',c:[fr(14,51),fr(7,30),fr(7,51),fr(1,3)],s:'d=7 و c=7 ⇒ ضریب ۱: '+M('1/3 − 1/17 = 17/51 − 3/51 = 14/51')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('4/(1×5) + 4/(5×9) + 4/(9×13)')+' کدام است؟',c:[fr(12,13),fr(4,13),fr(1,13),fr(16,13)],s:'d=4 و c=4 ⇒ ضریب ۱: '+M('1/1 − 1/13 = 12/13')+' ✓'},
+ {t:'تلسکوپی · مفهومی',q:'در یک مجموع تلسکوپی، جمله‌های میانی چه سرنوشتی دارند؟',c:['حذف می‌شوند و مجموع فقط به دو سر زنجیره وابسته است','دو برابر می‌شوند','به مجموع اضافه می‌شوند','باید جداگانه با مخرج مشترک حساب شوند'],s:'هر جملهٔ میانی یک‌بار با + و یک‌بار با − ظاهر می‌شود ⇒ خنثی ⇒ حذف ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('1/(1×2) + 1/(2×3) + … + 1/(9×10)')+' کدام است؟',c:[fr(9,10),fr(1,10),fr(1,1),fr(9,11)],s:M('1 − 1/10 = 9/10')+' ✓'},
+ {t:'تلسکوپی · حالت اول',q:'حاصل '+M('1/(5×6) + 1/(6×7) + … + 1/(9×10)')+' کدام است؟',c:[fr(1,10),fr(1,5),fr(1,30),fr(4,45)],s:'زنجیره از ۵ تا ۱۰: '+M('1/5 − 1/10 = 2/10 − 1/10 = 1/10')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('2/(1×3) + 2/(3×5) + 2/(5×7) + 2/(7×9)')+' کدام است؟',c:[fr(8,9),fr(4,9),fr(1,9),fr(2,9)],s:'d=2 و c=2 ⇒ ضریب ۱: '+M('1/1 − 1/9 = 8/9')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('6/(2×8) + 6/(8×14)')+' کدام است؟',c:[fr(3,7),fr(6,7),fr(1,7),fr(3,14)],s:'d=6 و c=6 ⇒ ضریب ۱: '+M('1/2 − 1/14 = 7/14 − 1/14 = 6/14 = 3/7')+' ✓'},
+ {t:'تلسکوپی · تعمیم',q:'حاصل '+M('1/(1×2) + 1/(2×3) + … + 1/(n(n+1))')+' برابر است با:',c:[M('n/(n+1)'),M('1/(n+1)'),M('(n−1)/n'),M('n(n+1)/2')],s:M('1 − 1/(n+1) = n/(n+1)')+' ✓ — نتیجهٔ کلی حذف تلسکوپی!'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('8/(3×7) + 8/(7×11) + 8/(11×15)')+' کدام است؟',c:[fr(8,15),fr(4,15),fr(2,15),fr(1,3)],s:'d=4، ضریب 8/4=2: '+M('2(1/3 − 1/15) = 2(5/15 − 1/15) = 2 × 4/15 = 8/15')+' ✓'},
+ {t:'تلسکوپی · مفهومی',q:'تجزیه‌ی درست کسر '+M('1/(2×5)')+' کدام است؟',c:[M('(1/3)(1/2 − 1/5)'),M('(1/2)(1/2 − 1/5)'),M('(1/3)(1/2 + 1/5)'),M('1/2 − 1/5')],s:'d=3 و صورت ۱ ⇒ ضریب 1/3: '+M('(1/3)(1/2 − 1/5) = (1/3)(3/10) = 1/10')+' ✓'},
+ {t:'تلسکوپی · حالت سوم',q:'حاصل '+M('10/(3×13) + 10/(13×23)')+' کدام است؟',c:[fr(20,69),fr(10,69),fr(1,3),fr(10,23)],s:'d=10 و c=10 ⇒ ضریب ۱: '+M('1/3 − 1/23 = 23/69 − 3/69 = 20/69')+' ✓'},
+ {t:'مجموع · طبیعی',q:'حاصل '+M('1 + 2 + 3 + … + 10')+' کدام است؟',c:['۵۵','۵۰','۴۵','۶۰'],s:M('S = 10 × 11 / 2 = 110 / 2 = 55')+' ✓'},
+ {t:'مجموع · طبیعی',q:'مجموع اعداد طبیعی از ۱ تا ۱۰۰ کدام است؟',c:['۵۰۵۰','۵۰۰۰','۴۹۵۰','۵۱۰۰'],s:M('S = 100 × 101 / 2 = 10100 / 2 = 5050')+' ✓ (کشف معروف گاوس!)'},
+ {t:'مجموع · طبیعی',q:'حاصل '+M('1 + 2 + 3 + … + 30')+' کدام است؟',c:['۴۶۵','۴۵۰','۴۳۵','۴۹۶'],s:M('S = 30 × 31 / 2 = 930 / 2 = 465')+' ✓'},
+ {t:'مجموع · زوج',q:'حاصل '+M('2 + 4 + 6 + … + 20')+' کدام است؟',c:['۱۱۰','۱۰۰','۱۲۰','۹۰'],s:'n=10 ؛ '+M('S = 10 × 11 = 110')+' ✓'},
+ {t:'مجموع · زوج',q:'مجموع ۲۰ عدد زوج طبیعی اول کدام است؟',c:['۴۲۰','۴۰۰','۴۴۰','۲۱۰'],s:M('S = 20 × 21 = 420')+' ✓ (آخرین عدد: ۴۰)'},
+ {t:'مجموع · زوج',q:'حاصل '+M('2 + 4 + 6 + … + 36')+' کدام است؟',c:['۳۴۲','۳۲۴','۳۶۰','۳۰۶'],s:M('n = 36/2 = 18')+' ؛ '+M('S = 18 × 19 = 342')+' ✓'},
+ {t:'مجموع · فرد',q:'حاصل '+M('1 + 3 + 5 + … + 19')+' کدام است؟',c:['۱۰۰','۹۰','۱۱۰','۵۰'],s:'n=10 ؛ '+M('S = 10² = 100')+' ✓'},
+ {t:'مجموع · فرد',q:'مجموع ۱۵ عدد فرد طبیعی اول کدام است؟',c:['۲۲۵','۲۴۰','۲۱۰','۱۲۰'],s:M('S = 15² = 225')+' ✓ (آخرین عدد: ۲۹)'},
+ {t:'مجموع · فرد',q:'حاصل '+M('1 + 3 + 5 + … + 39')+' کدام است؟',c:['۴۰۰','۳۸۰','۴۲۰','۲۰۰'],s:M('n = (39+1)/2 = 20')+' ؛ '+M('S = 20² = 400')+' ✓'},
+ {t:'مجموع · فرد',q:'حاصل '+M('1 + 3 + 5 + … + 57')+' کدام است؟',c:['۸۴۱','۷۸۴','۹۰۰','۸۷۰'],s:M('n = (57+1)/2 = 29')+' ؛ '+M('S = 29² = 841')+' ✓'},
+ {t:'مجموع · فرد',q:'آخرین عدد در مجموع ۳۰ عدد فرد طبیعی اول کدام است؟',c:['۵۹','۶۰','۶۱','۳۰'],s:M('2n − 1 = 2×30 − 1 = 59')+' ✓'},
+ {t:'مجموع · زوج',q:'آخرین عدد در مجموع ۲۵ عدد زوج طبیعی اول کدام است؟',c:['۵۰','۲۵','۴۹','۵۱'],s:M('2n = 2×25 = 50')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'دنباله‌ی '+M('3, 7, 11, 15, …, 99')+' چند جمله دارد؟',c:['۲۵','۲۴','۲۶','۹۶'],s:M('N = (99−3)/4 + 1 = 24 + 1 = 25')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'دنباله‌ی '+M('5, 10, 15, …, 100')+' چند جمله دارد؟',c:['۲۰','۱۹','۲۱','۹۵'],s:M('N = (100−5)/5 + 1 = 19 + 1 = 20')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'حاصل '+M('5 + 10 + 15 + … + 100')+' کدام است؟',c:['۱۰۵۰','۱۰۰۰','۱۱۰۰','۵۲۵'],s:M('N = (100−5)/5 + 1 = 20')+' ؛ '+M('S = (5+100)/2 × 20 = 52.5 × 20 = 1050')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'حاصل '+M('7 + 14 + 21 + … + 98')+' کدام است؟',c:['۷۳۵','۷۰۰','۷۵۰','۷۲۰'],s:M('N = (98−7)/7 + 1 = 14')+' ؛ '+M('S = (7+98)/2 × 14 = 52.5 × 14 = 735')+' ✓'},
+ {t:'مجموع · طبیعی',q:'مجموع اعداد طبیعی از ۱ تا ۶۰ کدام است؟',c:['۱۸۳۰','۱۸۰۰','۱۸۶۰','۱۷۷۰'],s:M('S = 60 × 61 / 2 = 3660 / 2 = 1830')+' ✓'},
+ {t:'مجموع · فرد',q:'مجموع ۱۰۰ عدد فرد طبیعی اول کدام است؟',c:['۱۰۰۰۰','۱۰۰۰','۵۰۵۰','۱۰۱۰۰'],s:M('S = 100² = 10000')+' ✓'},
+ {t:'مجموع · فرد',q:'مجموع ۵۰ عدد فرد طبیعی اول کدام است؟',c:['۲۵۰۰','۲۵۵۰','۲۴۰۰','۱۲۵۰'],s:M('S = 50² = 2500')+' ✓ — ۲۵۵۰ جواب زوج‌هاست، حواست باشد!'},
+ {t:'مجموع · فاصله معین',q:'حاصل '+M('2 + 6 + 10 + … + 98')+' کدام است؟',c:['۱۲۵۰','۱۲۰۰','۱۳۰۰','۲۴۵۰'],s:M('N = (98−2)/4 + 1 = 25')+' ؛ '+M('S = (2+98)/2 × 25 = 50 × 25 = 1250')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'دنباله‌ی '+M('10, 15, 20, …, 125')+' چند جمله دارد؟',c:['۲۴','۲۳','۲۵','۱۱۵'],s:M('N = (125−10)/5 + 1 = 23 + 1 = 24')+' ✓'},
+ {t:'مجموع · فاصله معین',q:'حاصل '+M('4 + 9 + 14 + … + 94')+' کدام است؟',c:['۹۳۱','۹۰۰','۹۵۰','۹۶۲'],s:M('N = (94−4)/5 + 1 = 19')+' ؛ '+M('S = (4+94)/2 × 19 = 49 × 19 = 931')+' ✓'},
+ {t:'مجموع · تشخیص فرمول',q:'برای محاسبه‌ی '+M('1 + 2 + 3 + … + n')+' از کدام فرمول استفاده می‌شود؟',c:[M('n(n+1) / 2'),M('n(n+1)'),M('n²'),M('(n+1)/2')],s:'از ۱ شروع شده و فاصله ۱ است ⇒ فرمول اعداد طبیعی متوالی ✓'},
+ {t:'مجموع · تشخیص فرمول',q:'برای محاسبه‌ی '+M('1 + 3 + 5 + … + (2n−1)')+' از کدام فرمول استفاده می‌شود؟',c:[M('n²'),M('n(n+1)'),M('2n−1'),M('n(n+1)/2')],s:'مجموع n عدد فرد اول برابر مربع تعدادشان است ✓'},
+ {t:'مجموع · زوج',q:'از ۲ تا ۶۰ چند عدد زوج وجود دارد؟',c:['۳۰','۲۹','۳۱','۶۰'],s:M('N = (60−2)/2 + 1 = 29 + 1 = 30')+' ✓ (فرمول تعداد با فاصله ۲!)'},
+ {t:'مجموع · طبیعی',q:'حاصل '+M('1 + 2 + 3 + … + 15')+' کدام است؟',c:['۱۲۰','۱۱۵','۱۰۵','۱۳۵'],s:M('S = 15 × 16 / 2 = 240 / 2 = 120')+' ✓'}
+];
+
+let ex={n:20,i:0,sc:0,list:[],locked:true,res:[]};
+document.querySelectorAll('#exStart .mode').forEach(b=>{
+  b.addEventListener('click',()=>startExam(+b.dataset.n));
+});
+function startExam(n){
+  ex.n=n;ex.list=shuffle(EXAM.slice()).slice(0,n);ex.i=0;ex.sc=0;ex.res=[];
+  $id('exStart').classList.add('hidden');$id('exFinal').classList.add('hidden');$id('exPlay').classList.remove('hidden');
+  renderEx();
+}
+function renderEx(){
+  const it=ex.list[ex.i];ex.locked=false;ex.res[ex.i]=false;
+  $id('exTopic').textContent='📚 '+it.t;
+  $id('exCount').textContent='سؤال '+toFa(ex.i+1)+' از '+toFa(ex.list.length);
+  $id('exSc').textContent='امتیاز: '+toFa(ex.sc);
+  $id('exBar').style.width=(ex.i/ex.list.length*100)+'%';
+  $id('exQ').innerHTML=it.q;
+  const box=$id('exOpts');box.innerHTML='';
+  shuffle(it.c.slice()).forEach(st=>{
+    const b=document.createElement('button');
+    const clean=st.replace(/<[^>]*>/g,'');
+    b.className='opt'+(/[\u0621-\u064A\u067E\u0686\u0698\u06AF\u06A9\u06CC]/.test(clean)?' txt':'');
+    b.dataset.ok=(st===it.c[0])?'1':'0';
+    b.innerHTML=st;
+    b.addEventListener('click',()=>{
+      if(ex.locked)return;
+      box.querySelectorAll('.opt').forEach(o=>o.classList.remove('picked'));
+      b.classList.add('picked');
+      $id('exCheck').disabled=false;
+    });
+    box.appendChild(b);
+  });
+  $id('exCheck').disabled=true;$id('exCheck').classList.remove('hidden');
+  $id('exNext').classList.add('hidden');$id('exSolBtn').classList.add('hidden');
+  const fb=$id('exFb');fb.className='feedback';fb.textContent='';
+  $id('exSolTxt').innerHTML=it.s;$id('exSolBox').style.maxHeight='0px';
+}
+$id('exCheck').addEventListener('click',()=>{
+  if(ex.locked)return;
+  const it=ex.list[ex.i],sel=$id('exOpts').querySelector('.opt.picked');
+  if(!sel)return;
+  ex.locked=true;
+  const ok=sel.dataset.ok==='1';
+  if(ok){
+    ex.sc++;ex.res[ex.i]=true;
+    sel.classList.add('correct');
+    $id('exFb').className='feedback ok';$id('exFb').textContent='🎉 درست است! آفرین.';
+    confetti();
+  }else{
+    sel.classList.remove('picked');sel.classList.add('wrong');
+    $id('exOpts').querySelectorAll('.opt').forEach(o=>{if(o.dataset.ok==='1')o.classList.add('correct','reveal');});
+    $id('exFb').className='feedback err';$id('exFb').textContent='❌ اشتباه بود! گزینه‌ی درست با رنگ سبز مشخص شد — راه‌حل را ببین و یاد بگیر.';
+  }
+  $id('exSc').textContent='امتیاز: '+toFa(ex.sc);
+  $id('exSolBox').style.maxHeight=($id('exSolBox').scrollHeight+160)+'px';
+  $id('exCheck').classList.add('hidden');
+  const last=ex.i===ex.list.length-1;
+  const nx=$id('exNext');
+  nx.textContent=last?'🏁 دیدن نتیجه':'سؤال بعدی ←';
+  nx.classList.remove('hidden');
+});
+$id('exNext').addEventListener('click',()=>{
+  if(ex.i===ex.list.length-1)finishExam();else{ex.i++;renderEx();}
+});
+function finishExam(){
+  $id('exPlay').classList.add('hidden');$id('exFinal').classList.remove('hidden');
+  const n=ex.list.length,p=Math.round(ex.sc/n*100);
+  $id('exDetail').textContent='نتیجه: '+toFa(ex.sc)+' از '+toFa(n)+' پاسخ درست — درصد موفقیت: '+toFa(p)+'٪';
+  $id('exFinalMsg').textContent= p===100?'🏆 استاد کامل! هر دو فصل را مسلطی!':(p>=85?'🎉 فوق‌العاده! آماده‌ی امتحان واقعی هستی.':(p>=70?'👍 خیلی خوب بود — چند سؤال را مرور کن تا کامل شوی.':(p>=50?'🙂 نصف راه را آمدی — سؤال‌های نادرست را با راه‌حل مرور کن.':'💪 نگران نباش! درس‌ها را دوباره مرور کن و از نو تلاش کن.')));
+  const C=2*Math.PI*52,ring=$id('exRing');
+  ring.style.strokeDasharray=C;ring.style.strokeDashoffset=C;
+  $id('exPct').textContent=toFa(p)+'٪';
+  requestAnimationFrame(()=>{setTimeout(()=>{ring.style.strokeDashoffset=C*(1-p/100);},80);});
+  const rv=$id('exRev');rv.innerHTML='';
+  ex.list.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='rev '+(ex.res[i]?'ok':'err');
+    d.innerHTML='<span class="ic">'+(ex.res[i]?'✓':'✗')+'</span><span class="rq">'+toFa(i+1)+') '+q.q+' — پاسخ درست: <b>'+q.c[0]+'</b></span>';
+    rv.appendChild(d);
+  });
+}
+$id('exAgain').addEventListener('click',()=>startExam(ex.n));
+$id('exHome').addEventListener('click',()=>{
+  $id('exFinal').classList.add('hidden');$id('exStart').classList.remove('hidden');
+});
+
+/* ================= فصل کسرهای مصری ================= */
+const egyFrac=(n,d)=>'<span class="frac big"><span class="fn">'+toFa(n)+'</span><span class="fd">'+toFa(d)+'</span></span>';
+
+/* نمایش تصویری کسر واحد */
+const unitRange=$id('unitRange'),unitStrip=$id('unitStrip');
+function renderUnitFraction(){
+  const d=+unitRange.value;
+  unitStrip.innerHTML='';
+  for(let i=0;i<d;i++){
+    const part=document.createElement('i');
+    if(i===0)part.className='on';
+    unitStrip.appendChild(part);
+  }
+  $id('unitFraction').innerHTML=egyFrac(1,d);
+  $id('unitValue').textContent=toFa(d)+' قسمت';
+  $id('unitCaption').textContent='یک سهم از '+toFa(d)+' سهم مساوی';
+  unitStrip.setAttribute('aria-label','یک کل به '+toFa(d)+' قسمت مساوی تقسیم شده و یک قسمت انتخاب شده است.');
+}
+unitRange.addEventListener('input',renderUnitFraction);
+renderUnitFraction();
+
+/* آزمایشگاه ۱/n */
+function buildUnitDecomposition(){
+  const raw=norm($id('unitN').value),n=Number(raw),out=$id('unitResult');
+  if(!Number.isInteger(n)||n<1||n>999){
+    out.innerHTML='<div class="feedback err" style="display:block">لطفاً یک عدد طبیعی بین ۱ تا ۹۹۹ وارد کن.</div>';
+    return;
+  }
+  const next=n+1,product=n*next;
+  out.innerHTML='<div class="egy-equation">'+egyFrac(1,n)+' = '+egyFrac(1,next)+' + '+egyFrac(1,product)+'</div>'+
+    '<p><strong>محاسبه:</strong> <span class="m">n+1 = '+n+'+1 = '+next+'</span> و <span class="m">n(n+1) = '+n+'×'+next+' = '+product+'</span></p>'+
+    '<div class="feedback ok" style="display:block">بررسی: کسر اول مخرجش '+toFa(product)+' می‌شود و مجموع صورت‌ها '+toFa(n)+'+۱='+toFa(next)+' است؛ سپس '+toFa(next)+' از صورت و مخرج ساده می‌شود و دوباره '+toFa(1)+'/'+toFa(n)+' به دست می‌آید.</div>';
+}
+$id('unitBuild').addEventListener('click',buildUnitDecomposition);
+$id('unitN').addEventListener('keydown',e=>{if(e.key==='Enter')buildUnitDecomposition();});
+buildUnitDecomposition();
+
+/* آزمایشگاه ۲/(۲n+۱) */
+function buildOddDecomposition(){
+  const raw=norm($id('oddDenominator').value),m=Number(raw),out=$id('oddResult');
+  if(!Number.isInteger(m)||m<3||m>999||m%2===0){
+    out.innerHTML='<div class="feedback err" style="display:block">مخرج باید یک عدد فرد بین ۳ تا ۹۹۹ باشد؛ مثل ۱۵ یا ۳۵.</div>';
+    return;
+  }
+  const n=(m-1)/2,next=n+1,product=m*next;
+  out.innerHTML='<div class="egy-equation">'+egyFrac(2,m)+' = '+egyFrac(1,next)+' + '+egyFrac(1,product)+'</div>'+
+    '<p><strong>قدم اول:</strong> <span class="m">n = ('+m+'−1)/2 = '+n+'</span>؛ پس <span class="m">n+1 = '+next+'</span>.</p>'+
+    '<p><strong>قدم دوم:</strong> مخرج دوم <span class="m">'+m+'×'+next+' = '+product+'</span> است.</p>'+
+    '<div class="feedback ok" style="display:block">کنترل: با مخرج مشترک '+toFa(product)+'، مجموع صورت‌ها '+toFa(m)+'+۱='+toFa(m+1)+' می‌شود و تقسیم صورت و مخرج بر '+toFa(next)+' دوباره ۲/'+toFa(m)+' را می‌دهد.</div>';
+}
+$id('oddBuild').addEventListener('click',buildOddDecomposition);
+$id('oddDenominator').addEventListener('keydown',e=>{if(e.key==='Enter')buildOddDecomposition();});
+buildOddDecomposition();
+
+/* بازی شمارنده‌یاب */
+const divisorGames=[
+  {num:7,den:12,divisors:[1,2,3,4,6,12]},
+  {num:11,den:12,divisors:[1,2,3,4,6,12]},
+  {num:9,den:20,divisors:[1,2,4,5,10,20]}
+];
+let divisorIndex=0,divisorSelected=new Set(),divisorLocked=false;
+const divisorChoices=$id('divisorChoices'),divisorFeedback=$id('divisorFeedback'),divisorNext=$id('divisorNext');
+function divisorGcd(a,b){return b?divisorGcd(b,a%b):a;}
+function renderDivisorGame(){
+  const game=divisorGames[divisorIndex];divisorSelected=new Set();divisorLocked=false;
+  $id('divisorQuestion').innerHTML=egyFrac(game.num,game.den);
+  $id('divisorResult').textContent='برای شروع، شمارنده‌ها را انتخاب کن.';
+  divisorFeedback.className='feedback';divisorFeedback.textContent='';divisorNext.classList.add('hidden');
+  divisorChoices.innerHTML='';
+  game.divisors.forEach(d=>{
+    const b=document.createElement('button');b.type='button';b.className='divisor-chip';b.textContent=toFa(d);b.dataset.value=d;
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',()=>{
+      if(divisorLocked)return;
+      if(divisorSelected.has(d)){divisorSelected.delete(d);b.classList.remove('selected');b.setAttribute('aria-pressed','false');}
+      else{divisorSelected.add(d);b.classList.add('selected');b.setAttribute('aria-pressed','true');}
+      const sum=[...divisorSelected].reduce((a,v)=>a+v,0);$id('divisorSum').textContent=toFa(sum);
+    });
+    divisorChoices.appendChild(b);
+  });
+  $id('divisorSum').textContent='۰';
+  const progress=$id('divisorProgress');progress.innerHTML='';
+  divisorGames.forEach((_,i)=>{const p=document.createElement('i');if(i<divisorIndex)p.className='done';progress.appendChild(p);});
+  progress.setAttribute('aria-label','مرحله '+toFa(divisorIndex+1)+' از '+toFa(divisorGames.length));
+}
+$id('divisorClear').addEventListener('click',()=>{if(!divisorLocked)renderDivisorGame();});
+$id('divisorBuild').addEventListener('click',()=>{
+  if(divisorLocked)return;
+  const game=divisorGames[divisorIndex],sum=[...divisorSelected].reduce((a,v)=>a+v,0);
+  if(!divisorSelected.size){divisorFeedback.className='feedback err';divisorFeedback.textContent='اول دست‌کم یک شمارنده را انتخاب کن.';return;}
+  if(sum!==game.num){
+    divisorFeedback.className='feedback err';
+    divisorFeedback.textContent=sum<game.num?'مجموع انتخاب‌ها '+toFa(sum)+' است و هنوز '+toFa(game.num-sum)+' کم دارد. یک شمارنده دیگر را امتحان کن.':'مجموع انتخاب‌ها '+toFa(sum)+' است و '+toFa(sum-game.num)+' زیادتر از صورت است. انتخاب را تغییر بده.';
+    return;
+  }
+  divisorLocked=true;
+  divisorChoices.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const parts=[...divisorSelected].sort((a,b)=>b-a);
+  const original=parts.map(d=>egyFrac(d,game.den)).join(' + ');
+  const reduced=parts.map(d=>{const g=divisorGcd(d,game.den);return egyFrac(d/g,game.den/g);}).join(' + ');
+  $id('divisorResult').innerHTML='<div>'+original+'</div><div style="margin-top:12px;color:var(--gold)">= '+reduced+'</div>';
+  divisorFeedback.className='feedback ok';divisorFeedback.textContent='آفرین! مجموع شمارنده‌ها برابر صورت شد و همه کسرها پس از ساده‌سازی، کسر واحد ساختند.';
+  divisorNext.textContent=divisorIndex===divisorGames.length-1?'شروع دوباره بازی':'مرحله بعد';divisorNext.classList.remove('hidden');
+  confetti();
+});
+divisorNext.addEventListener('click',()=>{divisorIndex=divisorIndex===divisorGames.length-1?0:divisorIndex+1;renderDivisorGame();});
+renderDivisorGame();
+
+/* تمرین‌های پایانی فصل */
+let egySolved=0;
+const egyQuestions=[...document.querySelectorAll('.egy-question')];
+egyQuestions.forEach(card=>{
+  const inp=card.querySelector('.ans'),check=card.querySelector('.check'),hint=card.querySelector('.hint'),fb=card.querySelector('.feedback');
+  function verify(){
+    if(card.dataset.solved==='1')return;
+    const answer=norm(inp.value);
+    if(!answer){fb.className='feedback err';fb.textContent='اول مخرج جای خالی را وارد کن.';return;}
+    if(answer===card.dataset.answer){
+      card.dataset.solved='1';egySolved++;inp.disabled=true;check.disabled=true;inp.classList.add('ok');
+      fb.className='feedback ok';fb.textContent='درست است! '+card.dataset.solution;
+      $id('egyFinalScore').textContent='پاسخ‌های درست: '+toFa(egySolved)+' از '+toFa(egyQuestions.length)+(egySolved===egyQuestions.length?' — عالی! هر چهار روش را به کار بردی.':'');
+      confetti();
+    }else{
+      inp.classList.add('no');setTimeout(()=>inp.classList.remove('no'),500);
+      fb.className='feedback err';fb.textContent='هنوز درست نیست. روش سؤال را مشخص کن و دوباره تلاش کن؛ اگر لازم بود «راهنما» را بزن.';
+    }
+  }
+  check.addEventListener('click',verify);inp.addEventListener('keydown',e=>{if(e.key==='Enter')verify();});
+  hint.addEventListener('click',()=>{
+    if(hint.dataset.stage==='solution'){fb.className='feedback ok';fb.textContent=card.dataset.solution;hint.textContent='پاسخ تشریحی نمایش داده شد';hint.disabled=true;}
+    else{hint.dataset.stage='solution';fb.className='feedback ok';fb.textContent='راهنما: '+card.dataset.hint;hint.textContent='نمایش پاسخ تشریحی';}
+  });
+});
+
+/* ابزارهای مطالعه */
+const fontToggle=$id('fontToggle');
+let fontLevel=0;
+try{fontLevel=Math.min(2,Math.max(0,+localStorage.getItem('mathLessonFont')||0));}catch(e){}
+function applyFontLevel(){
+  document.body.classList.toggle('font-large',fontLevel===1);document.body.classList.toggle('font-xlarge',fontLevel===2);
+  fontToggle.setAttribute('aria-label',fontLevel===2?'بازگرداندن اندازه معمولی متن':'بزرگ‌تر کردن متن');
+  fontToggle.title=fontLevel===0?'اندازه متن: معمولی':(fontLevel===1?'اندازه متن: بزرگ':'اندازه متن: خیلی بزرگ');
+}
+applyFontLevel();
+fontToggle.addEventListener('click',()=>{fontLevel=(fontLevel+1)%3;applyFontLevel();try{localStorage.setItem('mathLessonFont',fontLevel);}catch(e){}});
+$id('printLesson').addEventListener('click',()=>window.print());
+const backTop=$id('backTop');
+addEventListener('scroll',()=>backTop.classList.toggle('show',scrollY>700),{passive:true});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:REDUCED?'auto':'smooth'}));
+document.querySelectorAll('.sol-toggle').forEach(btn=>{
+  btn.setAttribute('aria-expanded','false');
+  btn.addEventListener('click',()=>{const open=btn.textContent.includes('بستن');btn.setAttribute('aria-expanded',open?'true':'false');});
+});
+
+</script>
+</body>
+</html>
